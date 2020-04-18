@@ -12,7 +12,7 @@ package entities.interfaces;
  * @param <H>
  * @param <O>
  */
-public interface IOptRiddle <R,H, O> extends IRiddle<R,H>{
+public interface IOptRiddle <R,H,O> extends IRiddle<R,H>{
     
     public O options();
     public void attempt();

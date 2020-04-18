@@ -13,7 +13,7 @@ package entities.interfaces;
  * @param <D>
  * @param <I>
  */
-public interface IDigestRiddle <R, H, D, I> extends IRiddle<R, H>{
+public interface IDigestRiddle<R, H, D, I> extends IRiddle<R, H>{
     
     public D digest(I input);
     public void attempt();

@@ -17,5 +17,4 @@ public interface IRiddleFacade {
     public <R, H> IRiddle<R, H> getRiddleByType(int type, int level); // Figure out how to identify what type of puzzle
     public String validateAnswer(String answer, int id);
     
-
 }
