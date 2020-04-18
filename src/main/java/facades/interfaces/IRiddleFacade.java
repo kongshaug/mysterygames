@@ -14,7 +14,7 @@ import entities.interfaces.IRiddle;
 public interface IRiddleFacade {
     
     public <R, H> IRiddle<R, H> getRandRiddle(int level);
-    public <R, H> IRiddle<R, H> getRiddleByType(int type, int level); //Figure out how to identify what type of puzzle
+    public <R, H> IRiddle<R, H> getRiddleByType(int type, int level); // Figure out how to identify what type of puzzle
     public String validateAnswer(String answer, int id);
     
 
