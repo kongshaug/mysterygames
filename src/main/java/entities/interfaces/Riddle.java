@@ -1,0 +1,21 @@
+/*
+ * To change this license header, choose License Headers in Project Properties.
+ * To change this template file, choose Tools | Templates
+ * and open the template in the editor.
+ */
+package entities.interfaces;
+
+/**
+ *
+ * @author benja
+ */
+public interface Riddle {
+    
+    public Long getId();
+    public String get();
+    public String hint();
+    public int level();
+    public int point();   
+
+    public boolean validate(String answer);
+}
