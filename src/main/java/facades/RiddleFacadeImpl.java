@@ -6,13 +6,13 @@
 package facades;
 
 import entities.EntityFactoryImpl;
+import entities.interfaces.Attempt;
 import entities.interfaces.EntityFactory;
-import entities.interfaces.Riddle;
-import entities.interfaces.User;
-import entities.interfaces.UserAttempt;
+import errorhandling.NotFoundException;
 import javax.persistence.EntityManager;
 import javax.persistence.EntityManagerFactory;
 import facades.interfaces.RiddleFacade;
+import java.util.UUID;
 
 /**
  *
@@ -42,43 +42,23 @@ class RiddleFacadeImpl implements RiddleFacade {
     }
 
     @Override
-    public Riddle getRandRiddle(int level) {
+    public Attempt newAttempt(long id) throws NotFoundException {
         throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
     }
 
     @Override
-    public Riddle getRiddleByType(int type, int level) {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
-    }
-
-
-    @Override
-    public void createUserAttempt(User user, Riddle riddle) {
+    public Attempt validateAnswer(UUID riddle_id, long id, String answer) throws NotFoundException {
         throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
     }
 
     @Override
-    public UserAttempt validateAnswer(long riddle_id, long id, String answer) {
-     
-     User user = FACTORY.find(id);
-     UserAttempt attempt = user.getUserAttempt(riddle_id);
-     Boolean solved = attempt.getRiddle().validate(answer);
-     if(solved){
-         user.addPoint();
-     }   
-     FACTORY.updateUser(user); 
-     return attempt;
-    }
-
-    @Override
-    public String hint(long riddle_id) {
+    public String hint(UUID riddle_id, long id) throws NotFoundException {
         throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
     }
 
     @Override
-    public void startTimer(long id, long riddle_id) {
+    public void startTime(long id, long riddle_id) throws NotFoundException {
         throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
     }
 
-   
 }

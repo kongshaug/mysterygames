@@ -5,18 +5,15 @@
  */
 package entities.interfaces;
 
-import enums.Status;
-
 /**
  *
  * @author sofieamalielandt
  */
-public interface UserAttempt {
-
-    public Status getStatus();
-
-    public int points();
-
-    public Riddle getRiddle();
+public interface DigestAttempt extends Attempt {
+    
+    public void newTry();
+    public boolean moreTries();
+    
+    
     
 }

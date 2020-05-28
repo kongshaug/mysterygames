@@ -5,11 +5,9 @@
  */
 package facades.interfaces;
 
-import dto.RiddleDTO;
-
-import entities.interfaces.Riddle;
-import entities.interfaces.User;
-import entities.interfaces.UserAttempt;
+import entities.interfaces.Attempt;
+import errorhandling.NotFoundException;
+import java.util.UUID;
 
 /**
  *
@@ -17,17 +15,14 @@ import entities.interfaces.UserAttempt;
  */
 public interface RiddleFacade {
     
-    public Riddle getRandRiddle(int level);
-    
-    public Riddle getRiddleByType(int type, int level); // Figure out how to identify what type of puzzle
+    //Takes an user id, and get a random riddle and generates an Attempt and adds it to the user
+    public Attempt newAttempt(long id) throws NotFoundException;
 
-    public void createUserAttempt(User user, Riddle riddle);
+    public Attempt validateAnswer(UUID riddle_id, long id, String answer) throws NotFoundException;
 
-    public UserAttempt validateAnswer(long riddle_id, long id, String answer);
+    public String hint(UUID riddle_id, long id) throws NotFoundException;
 
-    public String hint(long riddle_id);
-
-    public void startTimer(long id, long riddle_id);
+    public void startTime(long id, long riddle_id) throws NotFoundException;
 
 
     

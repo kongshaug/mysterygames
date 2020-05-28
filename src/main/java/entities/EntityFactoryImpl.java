@@ -5,9 +5,12 @@
  */
 package entities;
 
+import entities.interfaces.Attempt;
 import entities.interfaces.EntityFactory;
+import entities.interfaces.Riddle;
 import entities.interfaces.User;
-import entities.interfaces.UserAttempt;
+import java.util.List;
+import java.util.UUID;
 import javax.persistence.EntityManagerFactory;
 
 /**
@@ -31,12 +34,7 @@ public class EntityFactoryImpl implements EntityFactory {
     }
 
     @Override
-    public User find(long id) {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
-    }
-
-    @Override
-    public User find(String username) {
+    public User getUser(UUID id) {
         throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
     }
 
@@ -46,10 +44,28 @@ public class EntityFactoryImpl implements EntityFactory {
     }
 
     @Override
-    public void updateUser(User user) {
+    public User addUser(String username) {
         throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
     }
 
- 
+    @Override
+    public User updateUser(User user) {
+        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+    }
+
+    @Override
+    public List<User> getAllUsers() {
+        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+    }
+
+    @Override
+    public List<Riddle> getRiddles(int level) {
+        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+    }
+
+    @Override
+    public Attempt makeAttempt(Riddle riddle) {
+        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+    }
 
 }

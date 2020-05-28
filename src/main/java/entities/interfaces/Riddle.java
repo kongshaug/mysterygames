@@ -10,12 +10,10 @@ package entities.interfaces;
  * @author benja
  */
 public interface Riddle {
-    
-    public Long getId();
+   
     public String get();
     public String hint();
     public int level();
-    public int point();   
-
+    public int points();   
     public boolean validate(String answer);
 }

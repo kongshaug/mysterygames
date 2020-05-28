@@ -43,52 +43,13 @@ class ScoreBoardImpl implements ScoreBoard {
     }
 
     @Override
-    public User getUser(long id) throws NotFoundException {
-
-        User user = FACTORY.find(id);
-
-        if (user == null) {
-            throw new NotFoundException("No user found");
-        }
-        return user;
-    }
-
-    @Override
-    public User createUser(String username) {
-
-        User user = FACTORY.find(username);
-
-        if (user != null) {
-            throw new WebApplicationException("Username is already in use");
-        }
-        return FACTORY.getUser(username);
-    }
-
-    @Override
-    public void removePoint(long id) throws NotFoundException {
-
-        User user = FACTORY.find(id);
-
-        if (user == null) {
-            throw new NotFoundException("No user found");
-        }
-        user.removePoint();
-        FACTORY.updateUser(user);
-    }
-
-    @Override
-    public List<User> getAllScores() {
+    public List<User> get() throws NotFoundException {
         throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
     }
 
     @Override
-    public void addPoints(long id, int points) throws NotFoundException {
-        User user = FACTORY.find(id);
-
-        if (user == null) {
-            throw new NotFoundException("No user found");
-        }
-        user.addPoint();
-        FACTORY.updateUser(user);}
+    public User createUser(String username) throws WebApplicationException {
+        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+    }
 
 }

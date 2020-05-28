@@ -5,19 +5,16 @@
  */
 package entities.interfaces;
 
-import java.util.UUID;
+import enums.Status;
 
 /**
  *
  * @author sofieamalielandt
  */
-public interface User {
+public interface Attempt {
     
-    public void addPoints(int points);
-    public void removePoints(int points);
-    public void levelUp();
-    public int level();
-    public Attempt getAttempt(UUID id);
-
-    
+    public Status getStatus();
+    public void validateAnswer(String answer);
+    public int calcPoints();
+       
 }

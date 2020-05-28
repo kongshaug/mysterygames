@@ -1,11 +1,8 @@
 package rest;
 
-import dto.RiddleDTO;
-import dto.UserAttemptDTO;
+import dto.AttemptDTO;
 import dto.UserDTO;
-import entities.interfaces.Riddle;
 import entities.interfaces.User;
-import entities.interfaces.UserAttempt;
 import errorhandling.NotFoundException;
 import utils.EMF_Creator;
 import facades.FacadeFactoryImpl;
@@ -24,6 +21,7 @@ import facades.interfaces.ScoreBoard;
 import facades.interfaces.RiddleFacade;
 import facades.interfaces.FacadeFactory;
 import java.util.ArrayList;
+import java.util.UUID;
 
 @Path("mystery")
 public class MysteryResource {
@@ -44,15 +42,12 @@ public class MysteryResource {
     @GET
     @Path("/riddle/{id}")
     @Produces({MediaType.APPLICATION_JSON})
-    public RiddleDTO getRiddle(@PathParam("id") long id) {
+    public AttemptDTO getRiddle(@PathParam("id") long id) {
         try {
 
-            User user = SCOREBOARD.getUser(id);
-            Riddle riddle = FACADE.getRandRiddle(user.getLevel());
-            FACADE.createUserAttempt(user, riddle);
-            return new RiddleDTO();
+            return null;
 
-        } catch (NotFoundException | WebApplicationException e) {
+        } catch (WebApplicationException e) {
 
             throw new WebApplicationException(e.getMessage(), 400);
         }
@@ -65,12 +60,9 @@ public class MysteryResource {
     @Path("/riddle/{riddle_id}/{user_id}")
     @Consumes({MediaType.APPLICATION_JSON})
     @Produces({MediaType.APPLICATION_JSON})
-    public UserAttemptDTO riddleAttempt(@PathParam("riddle_id") long riddle_id, @PathParam("user_id") long id, String answer) {
-
-        try {
-
-            UserAttempt userAT = FACADE.validateAnswer(riddle_id, id, answer);
-            return new UserAttemptDTO(userAT);
+    public AttemptDTO answer(@PathParam("riddle_id") UUID riddle_id, @PathParam("user_id") long id, String answer) {
+        try {  
+            return null;
 
         } catch (WebApplicationException e) {
 
@@ -99,11 +91,10 @@ public class MysteryResource {
     @GET
     @Path("/hint/{user_id}/{riddle_id}")
     @Produces({MediaType.APPLICATION_JSON})
-    public String getHint(@PathParam("user_id") long id, @PathParam("riddle_id") long riddle_id) throws NotFoundException {
+    public String getHint(@PathParam("user_id") long id, @PathParam("riddle_id") UUID riddle_id) {
         try {
 
-            SCOREBOARD.removePoint(id);
-            return FACADE.hint(riddle_id);
+            return null;
 
         } catch (WebApplicationException e) {
 
@@ -116,15 +107,9 @@ public class MysteryResource {
     @GET
     @Path("/scoreboard")
     @Produces({MediaType.APPLICATION_JSON})
-    public List<UserDTO> getScoreBoard() throws NotFoundException {
+    public List<UserDTO> getScoreBoard() {
         try {
-            List<UserDTO> scores = new ArrayList();
-            List<User> users = SCOREBOARD.getAllScores();
-            // replace with streams()
-            users.forEach((user) -> {
-                scores.add(new UserDTO(user));
-            });
-            return scores;
+            return null;
 
         } catch (WebApplicationException e) {
 
@@ -137,9 +122,9 @@ public class MysteryResource {
     @Path("/timer/{id}/{riddle_id}")
     @Consumes({MediaType.APPLICATION_JSON})
     @Produces({MediaType.APPLICATION_JSON})
-    public void startTimer(@PathParam("id") long id, @PathParam("riddle_id") long riddle_id) {
+    public void startTime(@PathParam("id") long id, @PathParam("riddle_id") UUID riddle_id) {
         try {
-            FACADE.startTimer(id, riddle_id);
+      
 
         } catch (WebApplicationException e) {
 

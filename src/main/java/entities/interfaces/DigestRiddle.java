@@ -5,19 +5,14 @@
  */
 package entities.interfaces;
 
-import java.util.UUID;
-
 /**
  *
  * @author sofieamalielandt
+ * @param <R>
  */
-public interface User {
+public interface DigestRiddle<R> extends Riddle {
     
-    public void addPoints(int points);
-    public void removePoints(int points);
-    public void levelUp();
-    public int level();
-    public Attempt getAttempt(UUID id);
-
+    public R digest(String input);
+    
     
 }

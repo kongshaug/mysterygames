@@ -5,19 +5,28 @@
  */
 package entities.interfaces;
 
+import java.util.List;
+import java.util.UUID;
+
 /**
  *
  * @author sofieamalielandt
  */
 public interface EntityFactory {
 
-    public User find(long id);
-
-    public User find(String username);
-
+    public User getUser(UUID id);
     public User getUser(String username);
-
-    public void updateUser(User user);
+    public User addUser(String username);
+    public User updateUser(User user);
+    public List<User> getAllUsers();
+    public List<Riddle> getRiddles(int level);
+    public Attempt makeAttempt(Riddle riddle);
+    
+    
+    
+    
+    
+    
 
 
     

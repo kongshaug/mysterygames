@@ -5,7 +5,6 @@
  */
 package facades.interfaces;
 
-import dto.UserDTO;
 import entities.interfaces.User;
 import errorhandling.NotFoundException;
 import java.util.List;
@@ -17,14 +16,8 @@ import javax.ws.rs.WebApplicationException;
  */
 public interface ScoreBoard {
     
-    public List<User> getAllScores() throws NotFoundException;
-    
-    public User getUser(long id) throws NotFoundException;
-
+    public List<User> get() throws NotFoundException;
+   
     public User createUser(String username) throws WebApplicationException;
-
-    public void removePoint(long id) throws NotFoundException;
-
-    public void addPoints(long id, int points) throws NotFoundException;;
-    
+   
 }

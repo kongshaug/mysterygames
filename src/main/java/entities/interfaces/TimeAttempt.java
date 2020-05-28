@@ -5,19 +5,15 @@
  */
 package entities.interfaces;
 
-import java.util.UUID;
+import java.time.LocalDateTime;
 
 /**
  *
  * @author sofieamalielandt
  */
-public interface User {
+public interface TimeAttempt extends Attempt {
     
-    public void addPoints(int points);
-    public void removePoints(int points);
-    public void levelUp();
-    public int level();
-    public Attempt getAttempt(UUID id);
-
+    public void startTime();
+    public long getTime(LocalDateTime stop);
     
 }

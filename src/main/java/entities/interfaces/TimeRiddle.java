@@ -5,19 +5,12 @@
  */
 package entities.interfaces;
 
-import java.util.UUID;
-
 /**
  *
  * @author sofieamalielandt
  */
-public interface User {
+public interface TimeRiddle extends Riddle {
     
-    public void addPoints(int points);
-    public void removePoints(int points);
-    public void levelUp();
-    public int level();
-    public Attempt getAttempt(UUID id);
-
+    public long time(); 
     
 }
