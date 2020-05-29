@@ -57,7 +57,7 @@ class RiddleFacadeImpl implements RiddleFacade {
     }
 
     @Override
-    public void startTime(long id, long riddle_id) throws NotFoundException {
+    public void startTime(long id, UUID riddle_id) throws NotFoundException {
         throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
     }
 
