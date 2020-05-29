@@ -13,8 +13,10 @@ import enums.Status;
  */
 public interface Attempt {
     
+    // evt. boolean
     public Status getStatus();
     public void validateAnswer(String answer);
     public int calcPoints();
+    public Riddle riddle();
        
 }

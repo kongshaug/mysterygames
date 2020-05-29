@@ -14,11 +14,14 @@ import java.util.UUID;
 public interface User {
     
     public void addPoints(int points);
-    public void removePoints(int points);
+    public void removePoint();
     public void levelUp();
     public int level();
     public Attempt getAttempt(UUID id);
     public void addAttempt(Attempt attempt);
+    public Attempt getLatestAttempt();
+
+    public int points();
 
     
 }

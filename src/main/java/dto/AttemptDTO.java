@@ -5,7 +5,7 @@
  */
 package dto;
 
-import enums.Status;
+import entities.interfaces.Attempt;
 
 /**
  *
@@ -13,6 +13,8 @@ import enums.Status;
  */
 public class AttemptDTO {
 
-
-    
+    public AttemptDTO(Attempt attempt) {
+        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+    }
+ 
 }

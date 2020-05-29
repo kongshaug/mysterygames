@@ -13,7 +13,6 @@ import java.time.LocalDateTime;
  */
 public interface TimeAttempt extends Attempt {
     
-    public void startTime();
     public long getTime(LocalDateTime stop);
     
 }

@@ -2,6 +2,7 @@ package rest;
 
 import dto.AttemptDTO;
 import dto.UserDTO;
+import entities.interfaces.Attempt;
 import entities.interfaces.User;
 import errorhandling.NotFoundException;
 import utils.EMF_Creator;
@@ -20,14 +21,14 @@ import javax.ws.rs.core.MediaType;
 import facades.interfaces.ScoreBoard;
 import facades.interfaces.RiddleFacade;
 import facades.interfaces.FacadeFactory;
-import java.util.ArrayList;
+import java.util.Comparator;
 import java.util.UUID;
+import java.util.stream.Collectors;
 
 @Path("mystery")
 public class MysteryResource {
 
-    private static final EntityManagerFactory EMF = EMF_Creator.createEntityManagerFactory(EMF_Creator.DbSelector.DEV, EMF_Creator.Strategy.CREATE);
-    private static final FacadeFactory FACTORY = FacadeFactoryImpl.getFacadeFactory(EMF);
+    private static final FacadeFactory FACTORY = FacadeFactoryImpl.getFacadeFactory();
     private static final RiddleFacade FACADE = FACTORY.getRiddleFacade();
     private static final ScoreBoard SCOREBOARD = FACTORY.getScoreBoard();
 
@@ -45,26 +46,28 @@ public class MysteryResource {
     public AttemptDTO getRiddle(@PathParam("id") long id) {
         try {
 
-            return null;
+            Attempt attempt = FACADE.newAttempt(id);
+            return new AttemptDTO(attempt);
 
-        } catch (WebApplicationException e) {
+        } catch (NotFoundException | WebApplicationException e) {
 
             throw new WebApplicationException(e.getMessage(), 400);
         }
     }
 
-    //Takes a riddle id and an user id, gets UserAttempt from the database, validate answer and 
-    //uppdates UserAttempt corresponding to answer (SOLVED or FAILED).
+    //Takes a riddle id and an user id, gets Attempt from the database, validate answer and 
+    //uppdates Attempt corresponding to answer (SOLVED or FAILED).
     //Returns the RiddleAttempt
     @PUT
     @Path("/riddle/{riddle_id}/{user_id}")
     @Consumes({MediaType.APPLICATION_JSON})
     @Produces({MediaType.APPLICATION_JSON})
     public AttemptDTO answer(@PathParam("riddle_id") UUID riddle_id, @PathParam("user_id") long id, String answer) {
-        try {  
-            return null;
+        try {
+            Attempt attempt = FACADE.validateAnswer(riddle_id, id, answer);
+            return new AttemptDTO(attempt);
 
-        } catch (WebApplicationException e) {
+        } catch (NotFoundException | WebApplicationException e) {
 
             throw new WebApplicationException(e.getMessage(), 400);
         }
@@ -93,10 +96,10 @@ public class MysteryResource {
     @Produces({MediaType.APPLICATION_JSON})
     public String getHint(@PathParam("user_id") long id, @PathParam("riddle_id") UUID riddle_id) {
         try {
-
-            return null;
-
-        } catch (WebApplicationException e) {
+            
+            return FACADE.hint(riddle_id, id);
+            
+        } catch (NotFoundException | WebApplicationException e) {
 
             throw new WebApplicationException(e.getMessage(), 400);
         }
@@ -109,28 +112,28 @@ public class MysteryResource {
     @Produces({MediaType.APPLICATION_JSON})
     public List<UserDTO> getScoreBoard() {
         try {
-            return null;
+            List<User> users = SCOREBOARD.get();
+            List<UserDTO> usersDTO = users.stream().sorted(Comparator.comparing(User::points)).map(user -> new UserDTO(user)).collect(Collectors.toList());
+            return usersDTO;
 
-        } catch (WebApplicationException e) {
-
+        } catch (NotFoundException | WebApplicationException e) {
             throw new WebApplicationException(e.getMessage(), 400);
         }
     }
 
     //Takes an user id and a riddle id and puts a timestamp in the database.
-    @PUT
-    @Path("/timer/{id}/{riddle_id}")
-    @Consumes({MediaType.APPLICATION_JSON})
-    @Produces({MediaType.APPLICATION_JSON})
-    public void startTime(@PathParam("id") long id, @PathParam("riddle_id") UUID riddle_id) {
-        try {
-      
-
-        } catch (WebApplicationException e) {
-
-            throw new WebApplicationException(e.getMessage(), 400);
-        }
-    }
+//    @PUT
+//    @Path("/timer/{id}/{riddle_id}")
+//    @Consumes({MediaType.APPLICATION_JSON})
+//    @Produces({MediaType.APPLICATION_JSON})
+//    public void startTime(@PathParam("id") long id, @PathParam("riddle_id") UUID riddle_id) {
+//        try {
+//
+//        } catch (WebApplicationException e) {
+//
+//            throw new WebApplicationException(e.getMessage(), 400);
+//        }
+//    }
 
 //   
 //    @POST

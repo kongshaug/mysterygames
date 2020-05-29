@@ -17,16 +17,14 @@ import facades.interfaces.FacadeFactory;
  */
 public class FacadeFactoryImpl implements FacadeFactory {
     
-    private static EntityManagerFactory emf;
     private static FacadeFactoryImpl instance;
 
     //Private Constructor to ensure Singleton
     private FacadeFactoryImpl() {
     }
 
-    public static FacadeFactoryImpl getFacadeFactory(EntityManagerFactory _emf) {
+    public static FacadeFactoryImpl getFacadeFactory() {
         if (instance == null) {
-            emf = _emf;
             instance = new FacadeFactoryImpl();
         }
         return instance;
@@ -34,12 +32,12 @@ public class FacadeFactoryImpl implements FacadeFactory {
 
     @Override
     public RiddleFacade getRiddleFacade() {
-       return RiddleFacadeImpl.getRiddleFacade(emf);
+       return RiddleFacadeImpl.getRiddleFacade();
     }
 
     @Override
     public ScoreBoard getScoreBoard() {
-        return ScoreBoardImpl.getScoreBoard(emf);
+        return ScoreBoardImpl.getScoreBoard();
     }
     
 }

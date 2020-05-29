@@ -21,7 +21,6 @@ import entities.interfaces.User;
  */
 class ScoreBoardImpl implements ScoreBoard {
 
-    private static EntityManagerFactory emf;
     private static ScoreBoardImpl instance;
     private static EntityFactory FACTORY;
 
@@ -29,27 +28,32 @@ class ScoreBoardImpl implements ScoreBoard {
     private ScoreBoardImpl() {
     }
 
-    public static ScoreBoardImpl getScoreBoard(EntityManagerFactory _emf) {
+    public static ScoreBoardImpl getScoreBoard() {
         if (instance == null) {
-            emf = _emf;
             instance = new ScoreBoardImpl();
-            FACTORY = EntityFactoryImpl.getFactory(emf);
+            FACTORY = EntityFactoryImpl.getFactory();
         }
         return instance;
     }
 
-    private EntityManager getEntityManager() {
-        return emf.createEntityManager();
-    }
-
     @Override
     public List<User> get() throws NotFoundException {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+
+        List<User> users = FACTORY.getAllUsers();
+        return users;
+
     }
 
     @Override
     public User createUser(String username) throws WebApplicationException {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+
+        User user = FACTORY.getUser(username);
+
+        if (user != null) {
+            throw new WebApplicationException("Username is already in use", 400);
+        }
+        return FACTORY.addUser(username);
+
     }
 
 }

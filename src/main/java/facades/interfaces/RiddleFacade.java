@@ -21,9 +21,5 @@ public interface RiddleFacade {
     public Attempt validateAnswer(UUID riddle_id, long user_id, String answer) throws NotFoundException;
 
     public String hint(UUID riddle_id, long user_id) throws NotFoundException;
-
-    public void startTime(long user_id, UUID riddle_id) throws NotFoundException;
-
-
     
 }

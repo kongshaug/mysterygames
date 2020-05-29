@@ -11,7 +11,9 @@ import entities.interfaces.Riddle;
 import entities.interfaces.User;
 import java.util.List;
 import java.util.UUID;
+import javax.persistence.EntityManager;
 import javax.persistence.EntityManagerFactory;
+import utils.EMF_Creator;
 
 /**
  *
@@ -22,12 +24,16 @@ public class EntityFactoryImpl implements EntityFactory {
     private static EntityFactoryImpl instance = null;
     private static EntityManagerFactory emf;
 
-    public static EntityFactoryImpl getFactory(EntityManagerFactory _emf) {
+    public static EntityFactoryImpl getFactory() {
         if (instance == null) {
-            emf = _emf;
+            emf = EMF_Creator.createEntityManagerFactory(EMF_Creator.DbSelector.DEV, EMF_Creator.Strategy.CREATE);
             instance = new EntityFactoryImpl();
         }
         return instance;
+    }
+
+    private EntityManager getEntityManager() {
+        return emf.createEntityManager();
     }
 
     private EntityFactoryImpl() {
@@ -67,7 +73,5 @@ public class EntityFactoryImpl implements EntityFactory {
     public Attempt makeAttempt(Riddle riddle) {
         throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
     }
-
-    
 
 }

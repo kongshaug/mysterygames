@@ -8,9 +8,9 @@ package facades;
 import entities.EntityFactoryImpl;
 import entities.interfaces.Attempt;
 import entities.interfaces.EntityFactory;
+import entities.interfaces.Riddle;
+import entities.interfaces.User;
 import errorhandling.NotFoundException;
-import javax.persistence.EntityManager;
-import javax.persistence.EntityManagerFactory;
 import facades.interfaces.RiddleFacade;
 import java.util.UUID;
 
@@ -20,7 +20,6 @@ import java.util.UUID;
  */
 class RiddleFacadeImpl implements RiddleFacade {
     
-    private static EntityManagerFactory emf;
     private static RiddleFacadeImpl instance;
      private static EntityFactory FACTORY;
 
@@ -28,37 +27,47 @@ class RiddleFacadeImpl implements RiddleFacade {
     private RiddleFacadeImpl() {
     }
 
-    public static RiddleFacadeImpl getRiddleFacade(EntityManagerFactory _emf) {
+    public static RiddleFacadeImpl getRiddleFacade() {
         if (instance == null) {
-            emf = _emf;
             instance = new RiddleFacadeImpl();
-            FACTORY = EntityFactoryImpl.getFactory(emf);
+            FACTORY = EntityFactoryImpl.getFactory();
         }
         return instance;
     }
 
-    private EntityManager getEntityManager() {
-        return emf.createEntityManager();
-    }
 
     @Override
     public Attempt newAttempt(long id) throws NotFoundException {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+    
+        User user = FACTORY.getUser(id);
+        Riddle riddle = FACTORY.getRiddle(user.level());
+        Attempt attempt = FACTORY.makeAttempt(riddle);
+        user.addAttempt(attempt);
+        user = FACTORY.updateUser(user);
+        return user.getLatestAttempt();
+        
     }
 
     @Override
     public Attempt validateAnswer(UUID riddle_id, long id, String answer) throws NotFoundException {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+       
+        User user = FACTORY.getUser(id);
+        Attempt attempt = user.getAttempt(riddle_id);
+        attempt.validateAnswer(answer);
+        user = FACTORY.updateUser(user);
+        return user.getLatestAttempt();
+        
     }
 
     @Override
     public String hint(UUID riddle_id, long id) throws NotFoundException {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
-    }
-
-    @Override
-    public void startTime(long id, UUID riddle_id) throws NotFoundException {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+        
+        User user = FACTORY.getUser(id);
+        Attempt attempt = user.getAttempt(riddle_id);
+        user.removePoint();
+        FACTORY.updateUser(user);
+        return attempt.riddle().hint();
+     
     }
 
 }
