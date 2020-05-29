@@ -10,6 +10,7 @@ import entities.interfaces.EntityFactory;
 import entities.interfaces.Riddle;
 import entities.interfaces.User;
 import java.util.List;
+import java.util.UUID;
 import javax.persistence.EntityManagerFactory;
 
 /**
@@ -33,7 +34,7 @@ public class EntityFactoryImpl implements EntityFactory {
     }
 
     @Override
-    public User getUser(long id) {
+    public User getUser(UUID id) {
         throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
     }
 
@@ -58,7 +59,7 @@ public class EntityFactoryImpl implements EntityFactory {
     }
 
     @Override
-    public Riddle getRiddle(int level) {
+    public List<Riddle> getRiddles(int level) {
         throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
     }
 
