@@ -14,12 +14,12 @@ import java.util.UUID;
  */
 public interface EntityFactory {
 
-    public User getUser(UUID id);
+    public User getUser(long id);
     public User getUser(String username);
     public User addUser(String username);
     public User updateUser(User user);
     public List<User> getAllUsers();
-    public List<Riddle> getRiddles(int level);
+    public Riddle getRiddle(int level);
     public Attempt makeAttempt(Riddle riddle);
     
     

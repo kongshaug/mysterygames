@@ -18,6 +18,7 @@ public interface User {
     public void levelUp();
     public int level();
     public Attempt getAttempt(UUID id);
+    public void addAttempt(Attempt attempt);
 
     
 }
