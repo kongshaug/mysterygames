@@ -44,7 +44,7 @@ class RiddleFacadeImpl implements RiddleFacade {
         Attempt attempt = FACTORY.makeAttempt(riddle);
         user.addAttempt(attempt);
         user = FACTORY.updateUser(user);
-        return user.getLatestAttempt();
+        return user.getAttempt(riddle.Id());
         
     }
 
@@ -55,7 +55,7 @@ class RiddleFacadeImpl implements RiddleFacade {
         Attempt attempt = user.getAttempt(riddle_id);
         attempt.validateAnswer(answer);
         user = FACTORY.updateUser(user);
-        return user.getLatestAttempt();
+        return user.getAttempt(riddle_id);
         
     }
 

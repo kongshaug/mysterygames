@@ -10,5 +10,5 @@ package enums;
  * @author sofieamalielandt
  */
 public enum Status {
-  SOLVED, FAILED
+  PENDING, SOLVED, FAILED
 }

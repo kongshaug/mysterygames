@@ -113,7 +113,7 @@ public class MysteryResource {
     public List<UserDTO> getScoreBoard() {
         try {
             List<User> users = SCOREBOARD.get();
-            List<UserDTO> usersDTO = users.stream().sorted(Comparator.comparing(User::points)).map(user -> new UserDTO(user)).collect(Collectors.toList());
+            List<UserDTO> usersDTO = users.stream().sorted(Comparator.comparing(User::highScore)).map(user -> new UserDTO(user)).collect(Collectors.toList());
             return usersDTO;
 
         } catch (NotFoundException | WebApplicationException e) {

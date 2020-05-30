@@ -11,11 +11,13 @@ import java.io.Serializable;
 import java.util.HashSet;
 import java.util.Set;
 import java.util.UUID;
+import javax.persistence.CascadeType;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.NamedQuery;
+import javax.persistence.OneToMany;
 import javax.persistence.Table;
 
 /**
@@ -23,9 +25,9 @@ import javax.persistence.Table;
  * @author aamandajuhl
  */
 @Entity
-@Table(name="USER")
+@Table(name = "USERS")
 @NamedQuery(name = "UserImpl.deleteAllRows", query = "DELETE from UserImpl")
-public class UserImpl implements Serializable {
+class UserImpl implements Serializable, User {
 
     private static final long serialVersionUID = 1L;
     @Id
@@ -33,8 +35,19 @@ public class UserImpl implements Serializable {
     private long id;
     private String username;
     private int userLevel;
-    private int points;
-    private Set<Attempt> attempt = new HashSet();
+    private int highScore;
+    @OneToMany(cascade={CascadeType.PERSIST, CascadeType.MERGE}, mappedBy="user")
+    private Set<Attempt> attempts = new HashSet();
+    
+
+    public UserImpl() {
+    }
+
+    public UserImpl(String username) {
+        this.username = username;
+        this.highScore = 0;
+        this.userLevel = 1;
+    }
 
     public Long getId() {
         return id;
@@ -43,8 +56,82 @@ public class UserImpl implements Serializable {
     public void setId(Long id) {
         this.id = id;
     }
-    
-  
 
+    public String getUsername() {
+        return username;
+    }
+
+    public void setUsername(String username) {
+        this.username = username;
+    }
+
+    public int getUserLevel() {
+        return userLevel;
+    }
+
+    public void setUserLevel(int userLevel) {
+        this.userLevel = userLevel;
+    }
+
+    public int getHighScore() {
+        return highScore;
+    }
+
+    public void setHighScore(int highScore) {
+        this.highScore = highScore;
+    }
+
+    public Set<Attempt> getAttempts() {
+        return attempts;
+    }
+
+    public void setAttempts(Set<Attempt> attempts) {
+        this.attempts = attempts;
+    }
     
+    @Override
+    public void addAttempt(Attempt attempt) {
+        this.attempts.add(attempt);
+    }
+
+    @Override
+    public void addPoints(int points) {
+
+        this.highScore += points;
+    }
+
+    @Override
+    public void removePoint() {
+        this.highScore -= 10;
+    }
+
+    @Override
+    public void levelUp() {
+        this.userLevel++;
+    }
+
+    @Override
+    public int level() {
+        return userLevel;
+    }
+
+    @Override
+    public Attempt getAttempt(UUID id) {
+
+        Attempt attempt = null;
+
+        for (Attempt a : attempts) {
+            if (a.riddle().Id().equals(id)) {
+                attempt = a;
+            }
+        }
+        return attempt;
+            
+    }
+
+    @Override
+    public int highScore() {
+        return highScore;
+    }
+
 }

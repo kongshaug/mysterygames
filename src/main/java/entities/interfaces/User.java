@@ -19,9 +19,8 @@ public interface User {
     public int level();
     public Attempt getAttempt(UUID id);
     public void addAttempt(Attempt attempt);
-    public Attempt getLatestAttempt();
 
-    public int points();
+    public int highScore();
 
     
 }

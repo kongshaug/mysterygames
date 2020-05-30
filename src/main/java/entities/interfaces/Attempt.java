@@ -5,6 +5,7 @@
  */
 package entities.interfaces;
 
+import entities.UserImpl;
 import enums.Status;
 
 /**
@@ -18,5 +19,6 @@ public interface Attempt {
     public void validateAnswer(String answer);
     public int calcPoints();
     public Riddle riddle();
+    public void addUser(User user);
        
 }

@@ -1,0 +1,138 @@
+/*
+ * To change this license header, choose License Headers in Project Properties.
+ * To change this template file, choose Tools | Templates
+ * and open the template in the editor.
+ */
+package entities;
+
+import entities.interfaces.Attempt;
+import entities.interfaces.Riddle;
+import java.util.HashSet;
+import java.util.Set;
+import java.util.UUID;
+import javax.persistence.CascadeType;
+import static javax.persistence.CascadeType.ALL;
+import javax.persistence.Column;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
+import javax.persistence.Id;
+import javax.persistence.MappedSuperclass;
+import javax.persistence.OneToMany;
+
+/**
+ *
+ * @author sofieamalielandt
+ */
+@MappedSuperclass
+abstract class RiddleImpl implements Riddle {
+
+    private static final long serialVersionUID = 1L;
+    @Id
+    @Column(name = "id", updatable = false, nullable = false)
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    protected long id;
+    
+    @Column(name = "uid", updatable = false, nullable = false)
+    protected UUID uid;
+ 
+    @Column(name = "riddle", updatable = false, nullable = false)
+    protected String riddle;
+    
+    @Column(name = "answer", updatable = false, nullable = false)
+    protected String answer;
+    
+    @Column(name = "hint", updatable = false, nullable = false)
+    protected String hint;
+    
+    @Column(name = "riddle_level", updatable = false, nullable = false)
+    protected int riddleLevel;
+    
+    @OneToMany(cascade={CascadeType.PERSIST, CascadeType.MERGE}, mappedBy="riddle")
+    protected Set<Attempt> attempts = new HashSet();
+
+    public long getId() {
+        return id;
+    }
+
+    public void setId(long id) {
+        this.id = id;
+    }
+
+    public String getRiddle() {
+        return riddle;
+    }
+
+    public void setRiddle(String riddle) {
+        this.riddle = riddle;
+    }
+
+    public String getAnswer() {
+        return answer;
+    }
+
+    public void setAnswer(String answer) {
+        this.answer = answer;
+    }
+
+    public String getHint() {
+        return hint;
+    }
+
+    public void setHint(String hint) {
+        this.hint = hint;
+    }
+
+    public int getRiddleLevel() {
+        return riddleLevel;
+    }
+
+    public void setRiddleLevel(int riddleLevel) {
+        this.riddleLevel = riddleLevel;
+    }
+
+    public UUID getUid() {
+        return uid;
+    }
+
+    public void setUid(UUID uid) {
+        this.uid = uid;
+    }
+
+    public Set<Attempt> getAttempts() {
+        return attempts;
+    }
+
+    public void setAttempts(Set<Attempt> attempts) {
+        this.attempts = attempts;
+    }
+    
+    public void addAttempt(Attempt attempt) {
+        this.attempts.add(attempt);
+    }
+
+    @Override
+    public String hint() {
+        return hint;
+    }
+
+    @Override
+    public int level() {
+        return riddleLevel;
+    }
+
+    @Override
+    public int points() {
+        return riddleLevel * 10;
+    }
+
+    @Override
+    public boolean validate(String answer) {
+
+        return answer.equals(this.answer);
+    }
+    
+    @Override
+    public UUID Id() {
+        return uid;
+    }  
+}
