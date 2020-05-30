@@ -25,10 +25,10 @@ class OptRiddleImpl extends RiddleImpl implements Serializable {
     @Column(name = "options", updatable = false, nullable = false)
     protected List<String> options;
 
-    public OptRiddleImpl() {
+    OptRiddleImpl() {
     }
 
-    public OptRiddleImpl(String riddle, String answer, String hint, int riddleLevel, List<String> options) {
+    OptRiddleImpl(String riddle, String answer, String hint, int riddleLevel, List<String> options) {
         this.uid = UUID.randomUUID();
         this.riddle = riddle;
         this.answer = answer;
@@ -45,7 +45,5 @@ class OptRiddleImpl extends RiddleImpl implements Serializable {
     public void setOptions(List<String> options) {
         this.options = options;
     }
-    
-    
 
 }

@@ -6,15 +6,11 @@
 package entities;
 
 import entities.interfaces.Attempt;
-import entities.interfaces.Riddle;
-import entities.interfaces.User;
 import enums.Status;
 import javax.persistence.Column;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
-import javax.persistence.JoinColumn;
-import javax.persistence.ManyToOne;
 import javax.persistence.MappedSuperclass;
 
 /**
@@ -32,14 +28,7 @@ abstract class AttemptImpl implements Attempt {
     
     @Column(name = "status", updatable = true, nullable = false)
     protected Status status = Status.PENDING;
-    
-    @ManyToOne(optional=false) 
-    @JoinColumn(name="riddle_ID", nullable=false, updatable=false)
-    protected Riddle riddle;
    
-    @ManyToOne(optional=false)
-    @JoinColumn(name="user_ID", nullable=false, updatable=false)
-    protected User user;
 
     public long getId() {
         return id;
@@ -47,22 +36,6 @@ abstract class AttemptImpl implements Attempt {
 
     public void setId(long id) {
         this.id = id;
-    }
-
-    public Riddle getRiddle() {
-        return riddle;
-    }
-
-    public void setRiddle(Riddle riddle) {
-        this.riddle = riddle;
-    }
-
-    public User getUser() {
-        return user;
-    }
-
-    public void setUser(User user) {
-        this.user = user;
     }
     
     @Override
@@ -72,11 +45,6 @@ abstract class AttemptImpl implements Attempt {
 
     public void setStatus(Status status) {
         this.status = status;
-    }
-
-    @Override
-    public Riddle riddle() {
-        return riddle;
     }
     
 }

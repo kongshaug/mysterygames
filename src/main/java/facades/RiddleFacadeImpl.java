@@ -42,7 +42,6 @@ class RiddleFacadeImpl implements RiddleFacade {
         User user = FACTORY.getUser(id);
         Riddle riddle = FACTORY.getRiddle(user.level());
         Attempt attempt = FACTORY.makeAttempt(riddle);
-        user.addAttempt(attempt);
         user = FACTORY.updateUser(user);
         return user.getAttempt(riddle.Id());
         

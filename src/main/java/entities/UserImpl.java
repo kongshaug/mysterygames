@@ -19,6 +19,7 @@ import javax.persistence.Id;
 import javax.persistence.NamedQuery;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
+import javax.persistence.Transient;
 
 /**
  *
@@ -36,14 +37,22 @@ class UserImpl implements Serializable, User {
     private String username;
     private int userLevel;
     private int highScore;
-    @OneToMany(cascade={CascadeType.PERSIST, CascadeType.MERGE}, mappedBy="user")
-    private Set<Attempt> attempts = new HashSet();
     
+    @OneToMany(cascade = {CascadeType.PERSIST, CascadeType.MERGE}, mappedBy="user")
+    private Set<OptAttemptImpl> optAttempts = new HashSet();
+    
+//    @OneToMany(cascade={CascadeType.PERSIST, CascadeType.MERGE}, mappedBy="user")
+//    private Set<AttemptImpl> attempts = new HashSet();
+//    
+//    @OneToMany(cascade={CascadeType.PERSIST, CascadeType.MERGE}, mappedBy="user")
+//    private Set<AttemptImpl> attempts = new HashSet();
+//    @Transient
+//    private Set<Attempt> attempts = new HashSet();
 
     public UserImpl() {
     }
 
-    public UserImpl(String username) {
+    UserImpl(String username) {
         this.username = username;
         this.highScore = 0;
         this.userLevel = 1;
@@ -81,17 +90,21 @@ class UserImpl implements Serializable, User {
         this.highScore = highScore;
     }
 
-    public Set<Attempt> getAttempts() {
-        return attempts;
+    public Set<OptAttemptImpl> getOptAttempts() {
+        return optAttempts;
     }
 
-    public void setAttempts(Set<Attempt> attempts) {
-        this.attempts = attempts;
+    public void setOptAttempts(Set<OptAttemptImpl> attempts) {
+        this.optAttempts = attempts;
     }
     
     @Override
     public void addAttempt(Attempt attempt) {
-        this.attempts.add(attempt);
+        
+        if(attempt instanceof OptAttemptImpl){
+            this.optAttempts.add((OptAttemptImpl) attempt);
+        }
+        
     }
 
     @Override
@@ -120,11 +133,11 @@ class UserImpl implements Serializable, User {
 
         Attempt attempt = null;
 
-        for (Attempt a : attempts) {
-            if (a.riddle().Id().equals(id)) {
-                attempt = a;
-            }
-        }
+//        for (Attempt a : attempts) {
+//            if (a.riddle().Id().equals(id)) {
+//                attempt = a;
+//            }
+//        }
         return attempt;
             
     }

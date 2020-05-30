@@ -26,27 +26,28 @@ public class test {
         options.add("The dentist");
         options.add("The nurse");
         options.add("The gartner");
-        
+
         OptRiddleImpl riddle = new OptRiddleImpl("Bla Bla Bla", "The gartner", "He works in the garden ", 1, options);
+        OptAttemptImpl attempt = new OptAttemptImpl(riddle, user);
         
-        OptRiddleImpl r;
-        
+        user.addAttempt(attempt);
+//        riddle.addAttempt(attempt);
+     
+
         try {
             em.getTransaction().begin();
-            em.persist(riddle);
+            em.persist(user);
             em.getTransaction().commit();
-      
-            r = em.find(OptRiddleImpl.class, riddle.id);
-          
+            
+//            em.persist(user);
+//            em.getTransaction().commit();
+            
+            
 
         } finally {
             em.close();
         }
-        
-         System.out.println(r.uid + " "+ r.options.get(0));
-        
-        
-
+   
     }
 
 }

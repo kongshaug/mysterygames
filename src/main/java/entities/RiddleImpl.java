@@ -5,19 +5,13 @@
  */
 package entities;
 
-import entities.interfaces.Attempt;
 import entities.interfaces.Riddle;
-import java.util.HashSet;
-import java.util.Set;
 import java.util.UUID;
-import javax.persistence.CascadeType;
-import static javax.persistence.CascadeType.ALL;
 import javax.persistence.Column;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.MappedSuperclass;
-import javax.persistence.OneToMany;
 
 /**
  *
@@ -47,8 +41,6 @@ abstract class RiddleImpl implements Riddle {
     @Column(name = "riddle_level", updatable = false, nullable = false)
     protected int riddleLevel;
     
-    @OneToMany(cascade={CascadeType.PERSIST, CascadeType.MERGE}, mappedBy="riddle")
-    protected Set<Attempt> attempts = new HashSet();
 
     public long getId() {
         return id;
@@ -96,18 +88,6 @@ abstract class RiddleImpl implements Riddle {
 
     public void setUid(UUID uid) {
         this.uid = uid;
-    }
-
-    public Set<Attempt> getAttempts() {
-        return attempts;
-    }
-
-    public void setAttempts(Set<Attempt> attempts) {
-        this.attempts = attempts;
-    }
-    
-    public void addAttempt(Attempt attempt) {
-        this.attempts.add(attempt);
     }
 
     @Override
