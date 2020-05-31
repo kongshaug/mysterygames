@@ -6,6 +6,7 @@
 package entities;
 
 import entities.interfaces.Riddle;
+import java.util.Objects;
 import java.util.UUID;
 import javax.persistence.Column;
 import javax.persistence.GeneratedValue;
@@ -88,6 +89,28 @@ abstract class RiddleImpl implements Riddle {
 
     public void setUid(UUID uid) {
         this.uid = uid;
+    }
+
+    @Override
+    public int hashCode() {
+        int hash = 7;
+        hash = 97 * hash + Objects.hashCode(this.uid);
+        return hash;
+    }
+
+    @Override
+    public boolean equals(Object obj) {
+        if (this == obj) {
+            return true;
+        }
+        if (obj == null) {
+            return false;
+        }
+        if (getClass() != obj.getClass()) {
+            return false;
+        }
+        final RiddleImpl other = (RiddleImpl) obj;
+        return Objects.equals(this.uid, other.uid);
     }
 
     @Override
