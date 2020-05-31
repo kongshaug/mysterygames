@@ -5,14 +5,12 @@
  */
 package entities.interfaces;
 
-import java.time.LocalDateTime;
-
 /**
  *
  * @author sofieamalielandt
  */
 public interface TimeAttempt {
     
-    public long getTime(LocalDateTime stop);
+    public void calcTime();
     
 }

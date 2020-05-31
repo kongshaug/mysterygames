@@ -5,6 +5,8 @@
  */
 package entities;
 
+import java.time.Duration;
+import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 import javax.persistence.EntityManager;
@@ -18,35 +20,42 @@ import utils.EMF_Creator;
 public class test {
 
     public static void main(String[] args) {
-        EntityManagerFactory emf = EMF_Creator.createEntityManagerFactory(EMF_Creator.DbSelector.DEV, EMF_Creator.Strategy.CREATE);
-        EntityManager em = emf.createEntityManager();
-
-        UserImpl user = new UserImpl("sveske");
-        List<String> options = new ArrayList();
-        options.add("The dentist");
-        options.add("The nurse");
-        options.add("The gartner");
-
-        OptRiddleImpl riddle = new OptRiddleImpl("Bla Bla Bla", "The gartner", "He works in the garden ", 1, options);
-        OptAttemptImpl attempt = new OptAttemptImpl(riddle, user);
+//        EntityManagerFactory emf = EMF_Creator.createEntityManagerFactory(EMF_Creator.DbSelector.DEV, EMF_Creator.Strategy.CREATE);
+//        EntityManager em = emf.createEntityManager();
+//
+//        UserImpl user = new UserImpl("sveske");
+//        List<String> options = new ArrayList();
+//        options.add("The dentist");
+//        options.add("The nurse");
+//        options.add("The gartner");
+//
+//        OptRiddleImpl riddle = new OptRiddleImpl("Bla Bla Bla", "The gartner", "He works in the garden ", 1, options);
+//        OptAttemptImpl attempt = new OptAttemptImpl(riddle, user);
         
-        user.addAttempt(attempt);
-//        riddle.addAttempt(attempt);
-     
-
-        try {
-            em.getTransaction().begin();
-            em.persist(user);
-            em.getTransaction().commit();
-            
+        LocalDateTime now = LocalDateTime.now();
+        LocalDateTime then = now.plusSeconds(60);
+        Duration duration = Duration.between(now, then);
+        
+        System.out.println(duration.getSeconds());
+        
+        
+//        user.addAttempt(attempt);
+////        riddle.addAttempt(attempt);
+//     
+//
+//        try {
+//            em.getTransaction().begin();
 //            em.persist(user);
 //            em.getTransaction().commit();
-            
-            
-
-        } finally {
-            em.close();
-        }
+//            
+////            em.persist(user);
+////            em.getTransaction().commit();
+//            
+//            
+//
+//        } finally {
+//            em.close();
+//        }
    
     }
 
