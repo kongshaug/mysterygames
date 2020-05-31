@@ -38,6 +38,14 @@ class DigestRiddleImpl extends RiddleImpl implements Serializable, DigestRiddle 
         this.fun = fun;
     }
 
+    public Function<String, String> getFun() {
+        return fun;
+    }
+
+    public void setFun(Function<String, String> fun) {
+        this.fun = fun;
+    }
+    
     @Override
     public String digest(String input) {
         return fun.apply(input);
