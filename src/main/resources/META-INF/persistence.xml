@@ -6,7 +6,7 @@
     <class>entities.UserImpl</class>
     <class>entities.OptRiddleImpl</class>
     <class>entities.OptAttemptImpl</class>
-    <class>entities.DigestRiddleImpl</class>
+    <class>entities.TimeAttemptImpl</class>
     <exclude-unlisted-classes>false</exclude-unlisted-classes>
     <properties>
       <!-- DO NOT remove the line below. It's not set by the  entityUtils.EMF_Creator -->
