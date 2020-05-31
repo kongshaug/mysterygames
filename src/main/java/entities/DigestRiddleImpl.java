@@ -5,6 +5,7 @@
  */
 package entities;
 
+import entities.interfaces.DigestRiddle;
 import java.io.Serializable;
 import java.util.UUID;
 import java.util.function.Function;
@@ -20,7 +21,7 @@ import javax.persistence.Table;
 @Entity
 @Table(name = "DIGESTRIDDLE")
 @NamedQuery(name = "DigestRiddleImpl.deleteAllRows", query = "DELETE from DigestRiddleImpl")
-class DigestRiddleImpl extends RiddleImpl implements Serializable {
+class DigestRiddleImpl extends RiddleImpl implements Serializable, DigestRiddle {
     
     @Column(name = "funct", updatable = false, nullable = false)
     protected Function<String, String> fun;
@@ -35,6 +36,11 @@ class DigestRiddleImpl extends RiddleImpl implements Serializable {
         this.hint = hint;
         this.riddleLevel = riddleLevel;
         this.fun = fun;
+    }
+
+    @Override
+    public String digest(String input) {
+        return fun.apply(input);
     }
     
     
