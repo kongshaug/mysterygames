@@ -9,6 +9,7 @@ import entities.interfaces.Riddle;
 import entities.interfaces.User;
 import enums.Status;
 import java.io.Serializable;
+import java.util.Objects;
 import javax.persistence.CascadeType;
 import javax.persistence.Entity;
 import javax.persistence.JoinColumn;
@@ -79,5 +80,35 @@ class OptAttemptImpl extends AttemptImpl implements Serializable {
     public Riddle riddle() {
         return this.riddle;
     }
+
+    @Override
+    public int hashCode() {
+        int hash = 7;
+        hash = 31 * hash + Objects.hashCode(this.riddle);
+        hash = 31 * hash + Objects.hashCode(this.user);
+        return hash;
+    }
+
+    @Override
+    public boolean equals(Object obj) {
+        if (this == obj) {
+            return true;
+        }
+        if (obj == null) {
+            return false;
+        }
+        if (getClass() != obj.getClass()) {
+            return false;
+        }
+        final OptAttemptImpl other = (OptAttemptImpl) obj;
+        if (!Objects.equals(this.riddle, other.riddle)) {
+            return false;
+        }
+        if (!Objects.equals(this.user, other.user)) {
+            return false;
+        }
+        return true;
+    }
+    
 
 }
