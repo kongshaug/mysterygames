@@ -5,109 +5,81 @@
  */
 package entities;
 
+import entities.interfaces.DigestAttempt;
 import entities.interfaces.Riddle;
-import entities.interfaces.TimeAttempt;
 import enums.Status;
 import java.io.Serializable;
-import java.time.Duration;
 import java.time.LocalDateTime;
 import java.util.Objects;
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
+import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.NamedQuery;
 import javax.persistence.Table;
-import javax.persistence.Transient;
 
 /**
  *
  * @author aamandajuhl
  */
 @Entity
-@Table(name = "TIMEATTEMPT")
-@NamedQuery(name = "TimeAttemptImpl.deleteAllRows", query = "DELETE from TimeAttemptImpl")
-class TimeAttemptImpl extends AttemptImpl implements Serializable, TimeAttempt {
+@Table(name = "DIGESTATTEMPT")
+@NamedQuery(name = "DigestAttemptImpl.deleteAllRows", query = "DELETE from DigestAttemptImpl")
+class DigestAttemptImpl extends AttemptImpl implements Serializable, DigestAttempt {
 
-    @Column(name = "timestamp", updatable = false, nullable = false)
-    protected LocalDateTime timeStart;
-
-    @Transient
-    protected long time;
+    @Column(name = "tries", updatable = true, nullable = false)
+    protected int tries;
 
     @ManyToOne(cascade = {CascadeType.PERSIST, CascadeType.MERGE}, optional = false)
     @JoinColumn(name = "riddle_ID", nullable = false, updatable = false)
-    protected TimeRiddleImpl riddle;
+    protected DigestRiddleImpl riddle;
 
     @ManyToOne(optional = false)
     @JoinColumn(name = "user_ID", nullable = false, updatable = false)
     protected UserImpl user;
 
-    TimeAttemptImpl() {
+    DigestAttemptImpl() {
     }
 
-    TimeAttemptImpl(TimeRiddleImpl riddle, UserImpl user) {
-        this.timeStart = LocalDateTime.now();
-        this.time = 0;
+    DigestAttemptImpl(DigestRiddleImpl riddle, UserImpl user) {
+        this.tries = 3;
         this.riddle = riddle;
-        this.user = user;
-    }
-
-    public LocalDateTime getTimeStart() {
-        return timeStart;
-    }
-
-    public void setTimeStart(LocalDateTime timeStamp) {
-        this.timeStart = timeStamp;
-    }
-
-    public TimeRiddleImpl getRiddle() {
-        return riddle;
-    }
-
-    public void setRiddle(TimeRiddleImpl riddle) {
-        this.riddle = riddle;
-    }
-
-    public UserImpl getUser() {
-        return user;
-    }
-
-    public void setUser(UserImpl user) {
         this.user = user;
     }
 
     @Override
     public void validateAnswer(String answer) {
 
-        this.calcTime();
-
-        if (this.time <= riddle.time()) {
-
+        if (this.moreTries()) {
+            this.newTry();
             boolean solved = this.riddle.validate(answer);
 
             if (solved) {
                 int points = this.calcPoints();
                 this.user.addPoints(points);
                 this.status = Status.SOLVED;
+            } else if (!this.moreTries()) {
+                this.status = Status.FAILED;
             }
         } else {
             this.status = Status.FAILED;
         }
-
     }
 
     @Override
     public int calcPoints() {
 
-        if (this.time <= riddle.time() * 0.3) {
-            return riddle.points();
-        } else if (this.time <= riddle.time() * 0.6) {
-            return riddle.points() / 2;
+        if (this.tries == 2) {
+            return this.riddle.points();
+        } else if (this.tries == 1) {
+            return this.riddle.points() / 2;
         }
 
-        return riddle.points() / 4;
+        return this.riddle.points() / 4;
 
     }
 
@@ -117,20 +89,20 @@ class TimeAttemptImpl extends AttemptImpl implements Serializable, TimeAttempt {
     }
 
     @Override
-    public void calcTime() {
+    public void newTry() {
+        this.tries--;
+    }
 
-        LocalDateTime stopTime = LocalDateTime.now();
-        Duration duration = Duration.between(timeStart, stopTime);
-
-        this.time = duration.getSeconds();
-
+    @Override
+    public boolean moreTries() {
+        return tries > 0;
     }
 
     @Override
     public int hashCode() {
-        int hash = 3;
-        hash = 41 * hash + Objects.hashCode(this.riddle);
-        hash = 41 * hash + Objects.hashCode(this.user);
+        int hash = 5;
+        hash = 71 * hash + Objects.hashCode(this.riddle);
+        hash = 71 * hash + Objects.hashCode(this.user);
         return hash;
     }
 
@@ -145,7 +117,7 @@ class TimeAttemptImpl extends AttemptImpl implements Serializable, TimeAttempt {
         if (getClass() != obj.getClass()) {
             return false;
         }
-        final TimeAttemptImpl other = (TimeAttemptImpl) obj;
+        final DigestAttemptImpl other = (DigestAttemptImpl) obj;
         if (!Objects.equals(this.riddle, other.riddle)) {
             return false;
         }
@@ -154,7 +126,5 @@ class TimeAttemptImpl extends AttemptImpl implements Serializable, TimeAttempt {
         }
         return true;
     }
-    
-    
 
 }

@@ -38,25 +38,34 @@ class UserImpl implements Serializable, User {
     private String username;
     private int userLevel;
     private int highScore;
-    
-    @OneToMany(cascade = {CascadeType.PERSIST, CascadeType.MERGE}, mappedBy="user")
-    private Set<OptAttemptImpl> optAttempts = new HashSet();
-    
-    @OneToMany(cascade={CascadeType.PERSIST, CascadeType.MERGE}, mappedBy="user")
-    private Set<TimeAttemptImpl> timeAttempts = new HashSet();
-    
-//    @OneToMany(cascade={CascadeType.PERSIST, CascadeType.MERGE}, mappedBy="user")
-//    private Set<AttemptImpl> attempts = new HashSet();
-//    @Transient
-//    private Set<Attempt> attempts = new HashSet();
 
-    public UserImpl() {
+    @OneToMany(cascade = {CascadeType.PERSIST, CascadeType.MERGE}, mappedBy = "user")
+    private Set<OptAttemptImpl> optAttempts = new HashSet();
+
+    @OneToMany(cascade = {CascadeType.PERSIST, CascadeType.MERGE}, mappedBy = "user")
+    private Set<TimeAttemptImpl> timeAttempts = new HashSet();
+
+    @OneToMany(cascade = {CascadeType.PERSIST, CascadeType.MERGE}, mappedBy = "user")
+    private Set<DigestAttemptImpl> digestAttempts = new HashSet();
+
+    @Transient
+    private Set<Attempt> attempts;
+
+    UserImpl() {
     }
 
     UserImpl(String username) {
         this.username = username;
         this.highScore = 0;
         this.userLevel = 1;
+
+        this.attempts = new HashSet<Attempt>() {
+            {
+                addAll(optAttempts);
+                addAll(timeAttempts);
+                addAll(digestAttempts);
+            }
+        };
     }
 
     public Long getId() {
@@ -106,18 +115,26 @@ class UserImpl implements Serializable, User {
     public void setTimeAttempts(Set<TimeAttemptImpl> attempts) {
         this.timeAttempts = attempts;
     }
-    
+
+    public Set<DigestAttemptImpl> getDigestAttempts() {
+        return digestAttempts;
+    }
+
+    public void setDigestAttempts(Set<DigestAttemptImpl> digestAttempts) {
+        this.digestAttempts = digestAttempts;
+    }
+
     @Override
     public void addAttempt(Attempt attempt) {
-        
-        if(attempt instanceof OptAttemptImpl){
+
+        if (attempt instanceof OptAttemptImpl) {
             this.optAttempts.add((OptAttemptImpl) attempt);
-        }
-        
-        else if(attempt instanceof TimeAttemptImpl){
+        } else if (attempt instanceof TimeAttemptImpl) {
             this.timeAttempts.add((TimeAttemptImpl) attempt);
+        } else if (attempt instanceof DigestAttemptImpl) {
+            this.digestAttempts.add((DigestAttemptImpl) attempt);
         }
-        
+
     }
 
     @Override
@@ -144,15 +161,13 @@ class UserImpl implements Serializable, User {
     @Override
     public Attempt getAttempt(UUID id) {
 
-        Attempt attempt = null;
+        for (Attempt a : attempts) {
+            if (a.riddle().Id().equals(id)) {
+                return a;
+            }
+        }
+        return null;
 
-//        for (Attempt a : attempts) {
-//            if (a.riddle().Id().equals(id)) {
-//                attempt = a;
-//            }
-//        }
-        return attempt;
-            
     }
 
     @Override
@@ -188,7 +203,5 @@ class UserImpl implements Serializable, User {
         }
         return true;
     }
-    
-    
 
 }
