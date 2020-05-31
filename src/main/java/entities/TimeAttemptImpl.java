@@ -7,17 +7,14 @@ package entities;
 
 import entities.interfaces.Riddle;
 import entities.interfaces.TimeAttempt;
-import entities.interfaces.TimeRiddle;
 import enums.Status;
 import java.io.Serializable;
 import java.time.Duration;
 import java.time.LocalDateTime;
+import java.util.Objects;
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.NamedQuery;
@@ -128,5 +125,36 @@ class TimeAttemptImpl extends AttemptImpl implements Serializable, TimeAttempt {
         this.time = duration.getSeconds();
 
     }
+
+    @Override
+    public int hashCode() {
+        int hash = 3;
+        hash = 41 * hash + Objects.hashCode(this.riddle);
+        hash = 41 * hash + Objects.hashCode(this.user);
+        return hash;
+    }
+
+    @Override
+    public boolean equals(Object obj) {
+        if (this == obj) {
+            return true;
+        }
+        if (obj == null) {
+            return false;
+        }
+        if (getClass() != obj.getClass()) {
+            return false;
+        }
+        final TimeAttemptImpl other = (TimeAttemptImpl) obj;
+        if (!Objects.equals(this.riddle, other.riddle)) {
+            return false;
+        }
+        if (!Objects.equals(this.user, other.user)) {
+            return false;
+        }
+        return true;
+    }
+    
+    
 
 }

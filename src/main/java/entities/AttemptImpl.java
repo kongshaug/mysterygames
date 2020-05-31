@@ -47,4 +47,6 @@ abstract class AttemptImpl implements Attempt {
         this.status = status;
     }
     
+    
+    
 }
