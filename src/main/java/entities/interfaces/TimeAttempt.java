@@ -11,7 +11,7 @@ import java.time.LocalDateTime;
  *
  * @author sofieamalielandt
  */
-public interface TimeAttempt extends Attempt {
+public interface TimeAttempt {
     
     public long getTime(LocalDateTime stop);
     

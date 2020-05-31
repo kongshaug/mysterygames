@@ -9,7 +9,7 @@ package entities.interfaces;
  *
  * @author sofieamalielandt
  */
-public interface TimeRiddle extends Riddle {
+public interface TimeRiddle {
     
     public long time(); 
     

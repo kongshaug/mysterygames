@@ -9,7 +9,7 @@ package entities.interfaces;
  *
  * @author sofieamalielandt
  */
-public interface DigestAttempt extends Attempt {
+public interface DigestAttempt {
     
     public void newTry();
     public boolean moreTries();

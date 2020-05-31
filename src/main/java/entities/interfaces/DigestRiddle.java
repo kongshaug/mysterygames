@@ -10,7 +10,7 @@ package entities.interfaces;
  * @author sofieamalielandt
  * @param <R>
  */
-public interface DigestRiddle<R> extends Riddle {
+public interface DigestRiddle<R> {
     
     public R digest(String input);
     
