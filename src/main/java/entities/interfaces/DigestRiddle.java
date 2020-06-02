@@ -8,11 +8,9 @@ package entities.interfaces;
 /**
  *
  * @author sofieamalielandt
- * @param <R>
  */
 public interface DigestRiddle {
-    
+
     public String digest(String input);
-    
-    
+
 }

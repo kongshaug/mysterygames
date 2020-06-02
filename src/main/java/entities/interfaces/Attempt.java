@@ -12,11 +12,15 @@ import enums.Status;
  * @author sofieamalielandt
  */
 public interface Attempt {
-    
-    // evt. boolean
+
     public Status getStatus();
+
     public void validateAnswer(String answer);
+
     public int calcPoints();
+
     public Riddle riddle();
-       
+
+    public void update(Attempt attempt);
+
 }

@@ -5,10 +5,8 @@ import dto.UserDTO;
 import entities.interfaces.Attempt;
 import entities.interfaces.User;
 import errorhandling.NotFoundException;
-import utils.EMF_Creator;
 import facades.FacadeFactoryImpl;
 import java.util.List;
-import javax.persistence.EntityManagerFactory;
 import javax.ws.rs.Consumes;
 import javax.ws.rs.GET;
 import javax.ws.rs.POST;
@@ -96,9 +94,9 @@ public class MysteryResource {
     @Produces({MediaType.APPLICATION_JSON})
     public String getHint(@PathParam("user_id") long id, @PathParam("riddle_id") UUID riddle_id) {
         try {
-            
+
             return FACADE.hint(riddle_id, id);
-            
+
         } catch (NotFoundException | WebApplicationException e) {
 
             throw new WebApplicationException(e.getMessage(), 400);
@@ -121,19 +119,21 @@ public class MysteryResource {
         }
     }
 
-    //Takes an user id and a riddle id and puts a timestamp in the database.
-//    @PUT
-//    @Path("/timer/{id}/{riddle_id}")
-//    @Consumes({MediaType.APPLICATION_JSON})
-//    @Produces({MediaType.APPLICATION_JSON})
-//    public void startTime(@PathParam("id") long id, @PathParam("riddle_id") UUID riddle_id) {
-//        try {
-//
-//        } catch (WebApplicationException e) {
-//
-//            throw new WebApplicationException(e.getMessage(), 400);
-//        }
-//    }
+//  Return digest of a riddle
+    @PUT
+    @Path("/digest/{riddle_id}")
+    @Consumes({MediaType.APPLICATION_JSON})
+    @Produces({MediaType.APPLICATION_JSON})
+    public String digest(@PathParam("riddle_id") UUID riddle_id, String input) {
+        try {
+
+            return FACADE.digestInput(riddle_id, input);
+
+        } catch (NotFoundException | WebApplicationException e) {
+
+            throw new WebApplicationException(e.getMessage(), 400);
+        }
+    }
 
 //   
 //    @POST

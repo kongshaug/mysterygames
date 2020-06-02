@@ -64,7 +64,7 @@ class OptAttemptImpl extends AttemptImpl implements Serializable {
         boolean solved = this.riddle.validate(answer);
         if (solved) {
             int points = this.calcPoints();
-            this.user.addPoints(points);
+            this.user.levelUp(points);
             this.status = Status.SOLVED;
         } else {
             this.status = Status.FAILED;
@@ -104,11 +104,7 @@ class OptAttemptImpl extends AttemptImpl implements Serializable {
         if (!Objects.equals(this.riddle, other.riddle)) {
             return false;
         }
-        if (!Objects.equals(this.user, other.user)) {
-            return false;
-        }
-        return true;
+        return (!Objects.equals(this.user, other.user));
     }
-    
 
 }

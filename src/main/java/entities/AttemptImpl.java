@@ -19,16 +19,15 @@ import javax.persistence.MappedSuperclass;
  */
 @MappedSuperclass
 abstract class AttemptImpl implements Attempt {
-    
+
     private static final long serialVersionUID = 1L;
     @Id
     @Column(name = "id", updatable = false, nullable = false)
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     protected long id;
-    
+
     @Column(name = "status", updatable = true, nullable = false)
     protected Status status = Status.PENDING;
-   
 
     public long getId() {
         return id;
@@ -37,7 +36,7 @@ abstract class AttemptImpl implements Attempt {
     public void setId(long id) {
         this.id = id;
     }
-    
+
     @Override
     public Status getStatus() {
         return status;
@@ -46,7 +45,11 @@ abstract class AttemptImpl implements Attempt {
     public void setStatus(Status status) {
         this.status = status;
     }
-    
-    
-    
+
+    @Override
+    public void update(Attempt attempt) {
+        this.setStatus(attempt.getStatus());
+
+    }
+
 }

@@ -5,6 +5,7 @@
  */
 package entities.interfaces;
 
+import errorhandling.NotFoundException;
 import java.util.List;
 import java.util.UUID;
 
@@ -14,20 +15,22 @@ import java.util.UUID;
  */
 public interface EntityFactory {
 
-    public User getUser(long id);
+    public User getUser(long id) throws NotFoundException;
+
     public User getUser(String username);
+
     public User addUser(String username);
-    public User updateUser(User user);
-    public List<User> getAllUsers();
-    public Riddle getRiddle(int level);
-    public Attempt makeAttempt(Riddle riddle);
-    
-    
-    
-    
-    
-    
 
+    public User updateUser(User newUser, Attempt newAttempt) throws NotFoundException;
 
-    
+    public List<User> getAllUsers() throws NotFoundException;
+
+//    public Riddle getRiddle(int level) throws NotFoundException;
+
+    public Attempt makeAttempt(long id) throws NotFoundException;
+
+    public DigestRiddle getDigestRiddle(UUID riddle_id) throws NotFoundException;
+
+    public void updateUser(User newUser) throws NotFoundException;
+
 }

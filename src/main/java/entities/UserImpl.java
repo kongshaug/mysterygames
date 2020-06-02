@@ -68,7 +68,8 @@ class UserImpl implements Serializable, User {
         };
     }
 
-    public Long getId() {
+    @Override
+    public long getId() {
         return id;
     }
 
@@ -76,6 +77,7 @@ class UserImpl implements Serializable, User {
         this.id = id;
     }
 
+    @Override
     public String getUsername() {
         return username;
     }
@@ -149,8 +151,9 @@ class UserImpl implements Serializable, User {
     }
 
     @Override
-    public void levelUp() {
+    public void levelUp(int points) {
         this.userLevel++;
+        this.addPoints(points);
     }
 
     @Override
@@ -202,6 +205,11 @@ class UserImpl implements Serializable, User {
             return false;
         }
         return true;
+    }
+
+    @Override
+    public boolean riddleTried(UUID id) {
+        return attempts.stream().anyMatch((attempt) -> (attempt.riddle().Id().equals(id)));
     }
 
 }

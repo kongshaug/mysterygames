@@ -30,8 +30,8 @@ import javax.persistence.Transient;
 @NamedQuery(name = "TimeAttemptImpl.deleteAllRows", query = "DELETE from TimeAttemptImpl")
 class TimeAttemptImpl extends AttemptImpl implements Serializable, TimeAttempt {
 
-    @Column(name = "timestamp", updatable = false, nullable = false)
-    protected LocalDateTime timeStart;
+    @Column(name = "time_start", updatable = false, nullable = false)
+    protected LocalDateTime start;
 
     @Transient
     protected long time;
@@ -48,18 +48,18 @@ class TimeAttemptImpl extends AttemptImpl implements Serializable, TimeAttempt {
     }
 
     TimeAttemptImpl(TimeRiddleImpl riddle, UserImpl user) {
-        this.timeStart = LocalDateTime.now();
+        this.start = LocalDateTime.now();
         this.time = 0;
         this.riddle = riddle;
         this.user = user;
     }
 
-    public LocalDateTime getTimeStart() {
-        return timeStart;
+    public LocalDateTime getStart() {
+        return start;
     }
 
-    public void setTimeStart(LocalDateTime timeStamp) {
-        this.timeStart = timeStamp;
+    public void setStart(LocalDateTime start) {
+        this.start = start;
     }
 
     public TimeRiddleImpl getRiddle() {
@@ -89,7 +89,7 @@ class TimeAttemptImpl extends AttemptImpl implements Serializable, TimeAttempt {
 
             if (solved) {
                 int points = this.calcPoints();
-                this.user.addPoints(points);
+                this.user.levelUp(points);
                 this.status = Status.SOLVED;
             }
         } else {
@@ -120,7 +120,7 @@ class TimeAttemptImpl extends AttemptImpl implements Serializable, TimeAttempt {
     public void calcTime() {
 
         LocalDateTime stopTime = LocalDateTime.now();
-        Duration duration = Duration.between(timeStart, stopTime);
+        Duration duration = Duration.between(start, stopTime);
 
         this.time = duration.getSeconds();
 
@@ -149,12 +149,7 @@ class TimeAttemptImpl extends AttemptImpl implements Serializable, TimeAttempt {
         if (!Objects.equals(this.riddle, other.riddle)) {
             return false;
         }
-        if (!Objects.equals(this.user, other.user)) {
-            return false;
-        }
-        return true;
+        return (!Objects.equals(this.user, other.user));
     }
-    
-    
 
 }

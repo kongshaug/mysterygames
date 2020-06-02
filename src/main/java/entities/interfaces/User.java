@@ -12,14 +12,25 @@ import java.util.UUID;
  * @author sofieamalielandt
  */
 public interface User {
-    
+
     public void addPoints(int points);
+
     public void removePoint();
-    public void levelUp();
+
+    public void levelUp(int points);
+
     public int level();
+
     public Attempt getAttempt(UUID id);
+
     public void addAttempt(Attempt attempt);
+
     public int highScore();
 
+    public long getId();
     
+    public String getUsername();
+
+    public boolean riddleTried(UUID id);
+
 }

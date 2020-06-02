@@ -5,6 +5,7 @@
  */
 package entities;
 
+import entities.interfaces.Attempt;
 import entities.interfaces.DigestAttempt;
 import entities.interfaces.Riddle;
 import enums.Status;
@@ -51,6 +52,30 @@ class DigestAttemptImpl extends AttemptImpl implements Serializable, DigestAttem
         this.user = user;
     }
 
+    public int getTries() {
+        return tries;
+    }
+
+    public void setTries(int tries) {
+        this.tries = tries;
+    }
+
+    public DigestRiddleImpl getRiddle() {
+        return riddle;
+    }
+
+    public void setRiddle(DigestRiddleImpl riddle) {
+        this.riddle = riddle;
+    }
+
+    public UserImpl getUser() {
+        return user;
+    }
+
+    public void setUser(UserImpl user) {
+        this.user = user;
+    }
+
     @Override
     public void validateAnswer(String answer) {
 
@@ -60,7 +85,7 @@ class DigestAttemptImpl extends AttemptImpl implements Serializable, DigestAttem
 
             if (solved) {
                 int points = this.calcPoints();
-                this.user.addPoints(points);
+                this.user.levelUp(points);
                 this.status = Status.SOLVED;
             } else if (!this.moreTries()) {
                 this.status = Status.FAILED;
@@ -121,10 +146,14 @@ class DigestAttemptImpl extends AttemptImpl implements Serializable, DigestAttem
         if (!Objects.equals(this.riddle, other.riddle)) {
             return false;
         }
-        if (!Objects.equals(this.user, other.user)) {
-            return false;
-        }
-        return true;
+        return Objects.equals(this.user, other.user);
+    }
+
+    @Override
+    public void update(Attempt attempt) {
+        this.setStatus(attempt.getStatus());
+        this.newTry();
+
     }
 
 }
