@@ -3,10 +3,7 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package dto;
-
-import entities.interfaces.User;
-
+package entities;
 /**
  *
  * @author sofieamalielandt
@@ -18,7 +15,7 @@ public class UserDTO {
     private int level;
     private int highScore;
 
-    public UserDTO(User user) {
+    UserDTO(UserImpl user) {
 
         this.id = user.getId();
         this.username = user.getUsername();

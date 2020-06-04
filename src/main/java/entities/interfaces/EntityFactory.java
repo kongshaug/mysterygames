@@ -7,6 +7,7 @@ package entities.interfaces;
 
 import errorhandling.NotFoundException;
 import java.util.List;
+import java.util.Set;
 import java.util.UUID;
 
 /**
@@ -32,5 +33,7 @@ public interface EntityFactory {
     public DigestRiddle getDigestRiddle(UUID riddle_id) throws NotFoundException;
 
     public void updateUser(User newUser) throws NotFoundException;
+    
+    public boolean userTriedRiddle(UUID id, Set<Attempt> attempts);
 
 }

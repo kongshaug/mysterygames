@@ -108,7 +108,6 @@ class TimeAttemptImpl extends AttemptImpl implements Serializable, TimeAttempt {
         }
 
         return riddle.points() / 4;
-
     }
 
     @Override
@@ -150,6 +149,11 @@ class TimeAttemptImpl extends AttemptImpl implements Serializable, TimeAttempt {
             return false;
         }
         return (!Objects.equals(this.user, other.user));
+    }
+
+    @Override
+    public AttemptDTO toDTO() {
+        return new AttemptDTO(this);
     }
 
 }

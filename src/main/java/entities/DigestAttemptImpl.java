@@ -10,18 +10,17 @@ import entities.interfaces.DigestAttempt;
 import entities.interfaces.Riddle;
 import enums.Status;
 import java.io.Serializable;
-import java.time.LocalDateTime;
 import java.util.Objects;
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.NamedQuery;
 import javax.persistence.Table;
+
+
+
 
 /**
  *
@@ -29,7 +28,6 @@ import javax.persistence.Table;
  */
 @Entity
 @Table(name = "DIGESTATTEMPT")
-@NamedQuery(name = "DigestAttemptImpl.deleteAllRows", query = "DELETE from DigestAttemptImpl")
 class DigestAttemptImpl extends AttemptImpl implements Serializable, DigestAttempt {
 
     @Column(name = "tries", updatable = true, nullable = false)
@@ -38,7 +36,7 @@ class DigestAttemptImpl extends AttemptImpl implements Serializable, DigestAttem
     @ManyToOne(cascade = {CascadeType.PERSIST, CascadeType.MERGE}, optional = false)
     @JoinColumn(name = "riddle_ID", nullable = false, updatable = false)
     protected DigestRiddleImpl riddle;
-
+    
     @ManyToOne(optional = false)
     @JoinColumn(name = "user_ID", nullable = false, updatable = false)
     protected UserImpl user;
@@ -46,10 +44,11 @@ class DigestAttemptImpl extends AttemptImpl implements Serializable, DigestAttem
     DigestAttemptImpl() {
     }
 
-    DigestAttemptImpl(DigestRiddleImpl riddle, UserImpl user) {
+    DigestAttemptImpl(DigestRiddleImpl riddle, UserImpl user ) {
         this.tries = 3;
         this.riddle = riddle;
         this.user = user;
+       
     }
 
     public int getTries() {
@@ -154,6 +153,11 @@ class DigestAttemptImpl extends AttemptImpl implements Serializable, DigestAttem
         this.setStatus(attempt.getStatus());
         this.newTry();
 
+    }
+
+    @Override
+    public AttemptDTO toDTO() {
+        return new AttemptDTO(this);
     }
 
 }

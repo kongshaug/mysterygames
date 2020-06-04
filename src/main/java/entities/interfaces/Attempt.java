@@ -5,6 +5,7 @@
  */
 package entities.interfaces;
 
+import entities.AttemptDTO;
 import enums.Status;
 
 /**
@@ -22,5 +23,7 @@ public interface Attempt {
     public Riddle riddle();
 
     public void update(Attempt attempt);
+    
+    public AttemptDTO toDTO();
 
 }

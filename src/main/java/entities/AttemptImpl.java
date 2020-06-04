@@ -24,7 +24,7 @@ abstract class AttemptImpl implements Attempt {
     @Id
     @Column(name = "id", updatable = false, nullable = false)
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    protected long id;
+    protected Long id;
 
     @Column(name = "status", updatable = true, nullable = false)
     protected Status status = Status.PENDING;
@@ -51,5 +51,5 @@ abstract class AttemptImpl implements Attempt {
         this.setStatus(attempt.getStatus());
 
     }
-
+   
 }

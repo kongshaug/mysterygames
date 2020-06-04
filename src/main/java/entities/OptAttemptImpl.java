@@ -6,7 +6,6 @@
 package entities;
 
 import entities.interfaces.Riddle;
-import entities.interfaces.User;
 import enums.Status;
 import java.io.Serializable;
 import java.util.Objects;
@@ -66,6 +65,7 @@ class OptAttemptImpl extends AttemptImpl implements Serializable {
             int points = this.calcPoints();
             this.user.levelUp(points);
             this.status = Status.SOLVED;
+            
         } else {
             this.status = Status.FAILED;
         }
@@ -105,6 +105,11 @@ class OptAttemptImpl extends AttemptImpl implements Serializable {
             return false;
         }
         return (!Objects.equals(this.user, other.user));
+    }
+
+    @Override
+    public AttemptDTO toDTO() {
+        return new AttemptDTO(this);
     }
 
 }

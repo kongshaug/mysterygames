@@ -5,6 +5,7 @@
  */
 package entities.interfaces;
 
+import entities.RiddleDTO;
 import java.util.UUID;
 
 /**
@@ -18,4 +19,5 @@ public interface Riddle {
     public int points();   
     public boolean validate(String answer);
     public UUID Id();
+    public RiddleDTO toDTO();
 }

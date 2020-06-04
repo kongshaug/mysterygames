@@ -5,6 +5,7 @@
  */
 package entities.interfaces;
 
+import entities.UserDTO;
 import java.util.UUID;
 
 /**
@@ -27,10 +28,10 @@ public interface User {
 
     public int highScore();
 
-    public long getId();
+    public Long getId();
     
     public String getUsername();
-
-    public boolean riddleTried(UUID id);
+    
+    public UserDTO toDTO();
 
 }

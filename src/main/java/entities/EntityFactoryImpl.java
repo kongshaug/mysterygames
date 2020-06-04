@@ -14,6 +14,7 @@ import errorhandling.NotFoundException;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
+import java.util.Set;
 import java.util.UUID;
 import javax.persistence.EntityManager;
 import javax.persistence.EntityManagerFactory;
@@ -68,16 +69,17 @@ public class EntityFactoryImpl implements EntityFactory {
     @Override
     public User getUser(String username) {
 
-        EntityManager em = getEntityManager();
-        User user;
-
+        EntityManager em = getEntityManager();   
         try {
-            user = em.find(UserImpl.class, username);
+
+            TypedQuery<UserImpl> query = em.createQuery("SELECT u FROM UserImpl u WHERE u.username = :username", UserImpl.class);
+            UserImpl user = query.setParameter("username", username).getSingleResult();
+
+            return user;
 
         } finally {
             em.close();
         }
-        return user;
 
     }
 
@@ -165,7 +167,7 @@ public class EntityFactoryImpl implements EntityFactory {
             int index = random.nextInt(levelRiddles.size());
             newRiddle = levelRiddles.get(index);
 
-            if (user.riddleTried(newRiddle.Id())) {
+            if (userTriedRiddle(newRiddle.Id(), user.getAttempts())) {
                 levelRiddles.remove(index);
             } else {
                 return newRiddle;
@@ -266,7 +268,6 @@ public class EntityFactoryImpl implements EntityFactory {
             user.setHighScore(newUser.highScore());
             user.setUserLevel(newUser.level());
 
-
             em.getTransaction().begin();
             em.merge(user);
             em.getTransaction().commit();
@@ -274,6 +275,11 @@ public class EntityFactoryImpl implements EntityFactory {
         } finally {
             em.close();
         }
+    }
+
+    @Override
+    public boolean userTriedRiddle(UUID id, Set<Attempt> attempts) {
+        return attempts.stream().anyMatch((attempt) -> attempt.riddle().Id().equals(id));
     }
 
 }

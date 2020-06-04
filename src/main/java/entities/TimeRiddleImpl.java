@@ -49,19 +49,10 @@ class TimeRiddleImpl extends RiddleImpl implements Serializable, TimeRiddle {
     public long time() {
         return riddleTime;
     }
-    
-    
 
-    
-    
-        
-        
-        
-    
-    
-    
-    
-    
-    
-    
+    @Override
+    public RiddleDTO toDTO() {
+        return new RiddleDTO(this);
+    }
+
 }

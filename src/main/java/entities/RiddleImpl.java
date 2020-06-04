@@ -25,7 +25,7 @@ abstract class RiddleImpl implements Riddle {
     @Id
     @Column(name = "id", updatable = false, nullable = false)
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    protected long id;
+    protected Long id;
     
     @Column(name = "uid", updatable = false, nullable = false)
     protected UUID uid;

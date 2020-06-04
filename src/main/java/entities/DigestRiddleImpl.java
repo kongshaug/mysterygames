@@ -8,11 +8,11 @@ package entities;
 import entities.interfaces.DigestRiddle;
 import java.io.Serializable;
 import java.util.UUID;
-import java.util.function.Function;
-import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.NamedQuery;
 import javax.persistence.Table;
+import groovy.util.Eval;
+import javax.persistence.Column;
 
 /**
  *
@@ -22,34 +22,40 @@ import javax.persistence.Table;
 @Table(name = "DIGESTRIDDLE")
 @NamedQuery(name = "DigestRiddleImpl.deleteAllRows", query = "DELETE from DigestRiddleImpl")
 class DigestRiddleImpl extends RiddleImpl implements Serializable, DigestRiddle {
-    
+
     @Column(name = "funct", updatable = false, nullable = false)
-    protected Function<String, String> fun;
-  
+    protected String funct;
+
     DigestRiddleImpl() {
     }
-                
-    DigestRiddleImpl(String riddle, String answer, String hint, int riddleLevel,Function<String,String> fun ) {
+
+    DigestRiddleImpl(String riddle, String answer, String hint, int riddleLevel, String funct) {
         this.uid = UUID.randomUUID();
         this.riddle = riddle;
         this.answer = answer;
         this.hint = hint;
         this.riddleLevel = riddleLevel;
-        this.fun = fun;
+        this.funct = funct;
     }
 
-    public Function<String, String> getFun() {
-        return fun;
+    public String getFun() {
+        return funct;
     }
 
-    public void setFun(Function<String, String> fun) {
-        this.fun = fun;
+    public void setFun(String funct) {
+        this.funct = funct;
     }
-    
+
     @Override
     public String digest(String input) {
-        return fun.apply(input);
+        String output = Eval.x(input, this.funct).toString();
+        return output;
+
     }
-    
-    
+
+    @Override
+    public RiddleDTO toDTO() {
+        return new RiddleDTO(this);
+    }
+
 }

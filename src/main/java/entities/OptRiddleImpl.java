@@ -35,7 +35,6 @@ class OptRiddleImpl extends RiddleImpl implements Serializable {
         this.hint = hint;
         this.riddleLevel = riddleLevel;
         this.options = options;
-
     }
 
     public List<String> getOptions() {
@@ -44,6 +43,11 @@ class OptRiddleImpl extends RiddleImpl implements Serializable {
 
     public void setOptions(List<String> options) {
         this.options = options;
+    }
+
+    @Override
+    public RiddleDTO toDTO() {
+        return new RiddleDTO(this);
     }
 
 }

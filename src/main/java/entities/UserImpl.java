@@ -28,13 +28,12 @@ import javax.persistence.Transient;
  */
 @Entity
 @Table(name = "USERS")
-@NamedQuery(name = "UserImpl.deleteAllRows", query = "DELETE from UserImpl")
 class UserImpl implements Serializable, User {
 
     private static final long serialVersionUID = 1L;
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private long id;
+    private Long id;
     private String username;
     private int userLevel;
     private int highScore;
@@ -69,7 +68,7 @@ class UserImpl implements Serializable, User {
     }
 
     @Override
-    public long getId() {
+    public Long getId() {
         return id;
     }
 
@@ -124,6 +123,10 @@ class UserImpl implements Serializable, User {
 
     public void setDigestAttempts(Set<DigestAttemptImpl> digestAttempts) {
         this.digestAttempts = digestAttempts;
+    }
+
+    public Set<Attempt> getAttempts() {
+        return attempts;
     }
 
     @Override
@@ -198,18 +201,15 @@ class UserImpl implements Serializable, User {
             return false;
         }
         final UserImpl other = (UserImpl) obj;
-        if (this.id != other.id) {
+        if (!Objects.equals(this.id, other.id)) {
             return false;
         }
-        if (!Objects.equals(this.username, other.username)) {
-            return false;
-        }
-        return true;
+        return Objects.equals(this.username, other.username);
     }
 
     @Override
-    public boolean riddleTried(UUID id) {
-        return attempts.stream().anyMatch((attempt) -> (attempt.riddle().Id().equals(id)));
+    public UserDTO toDTO() {
+        return new UserDTO(this);
     }
 
 }

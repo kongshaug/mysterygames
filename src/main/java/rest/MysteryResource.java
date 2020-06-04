@@ -1,7 +1,7 @@
 package rest;
 
-import dto.AttemptDTO;
-import dto.UserDTO;
+import entities.AttemptDTO;
+import entities.UserDTO;
 import entities.interfaces.Attempt;
 import entities.interfaces.User;
 import errorhandling.NotFoundException;
@@ -45,7 +45,7 @@ public class MysteryResource {
         try {
 
             Attempt attempt = FACADE.newAttempt(id);
-            return new AttemptDTO(attempt);
+            return attempt.toDTO();
 
         } catch (NotFoundException | WebApplicationException e) {
 
@@ -53,9 +53,9 @@ public class MysteryResource {
         }
     }
 
-    //Takes a riddle id and an user id, gets Attempt from the database, validate answer and 
-    //uppdates Attempt corresponding to answer (SOLVED or FAILED).
-    //Returns the RiddleAttempt
+//    Takes a riddle id and an user id, gets Attempt from the database, validate answer and 
+//    uppdates Attempt corresponding to answer (SOLVED or FAILED).
+//    Returns the RiddleAttempt
     @PUT
     @Path("/riddle/{riddle_id}/{user_id}")
     @Consumes({MediaType.APPLICATION_JSON})
@@ -63,7 +63,7 @@ public class MysteryResource {
     public AttemptDTO answer(@PathParam("riddle_id") UUID riddle_id, @PathParam("user_id") long id, String answer) {
         try {
             Attempt attempt = FACADE.validateAnswer(riddle_id, id, answer);
-            return new AttemptDTO(attempt);
+            return attempt.toDTO();
 
         } catch (NotFoundException | WebApplicationException e) {
 
@@ -72,15 +72,15 @@ public class MysteryResource {
 
     }
 
-    //Takes an username, creates an user in the database - returns the User
+//    Takes an username, creates an user in the database - returns the User
     @POST
-    @Path("/user")
+    @Path("user")
     @Consumes({MediaType.APPLICATION_JSON})
     @Produces({MediaType.APPLICATION_JSON})
     public UserDTO createUser(String username) {
         try {
             User user = SCOREBOARD.createUser(username);
-            return new UserDTO(user);
+            return user.toDTO();
 
         } catch (WebApplicationException e) {
 
@@ -88,7 +88,7 @@ public class MysteryResource {
         }
     }
 
-    //Takes a riddle_id and returns the hint of the riddle
+//    Takes a riddle_id and returns the hint of the riddle
     @GET
     @Path("/hint/{user_id}/{riddle_id}")
     @Produces({MediaType.APPLICATION_JSON})
@@ -111,7 +111,7 @@ public class MysteryResource {
     public List<UserDTO> getScoreBoard() {
         try {
             List<User> users = SCOREBOARD.get();
-            List<UserDTO> usersDTO = users.stream().sorted(Comparator.comparing(User::highScore)).map(user -> new UserDTO(user)).collect(Collectors.toList());
+            List<UserDTO> usersDTO = users.stream().sorted(Comparator.comparing(User::highScore)).map(user -> user.toDTO()).collect(Collectors.toList());
             return usersDTO;
 
         } catch (NotFoundException | WebApplicationException e) {
@@ -135,12 +135,4 @@ public class MysteryResource {
         }
     }
 
-//   
-//    @POST
-//    @Path("/riddle")
-//    @Consumes({MediaType.APPLICATION_JSON})
-//    @Produces({MediaType.APPLICATION_JSON})
-//    public void createRiddle(String riddleAsJSON){
-//  
-//    }   
 }
