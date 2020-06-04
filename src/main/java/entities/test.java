@@ -74,49 +74,73 @@ public class test {
 
         DigestRiddleImpl r10 = new DigestRiddleImpl("Enter a number and figure out the function based on the response. "
                 + "You can try as many times as you like, but you only have 3 attempts to guess the function.",
-                "2 * x + 2", "Try to -2 from the response", 2, "2 * x + 2");
+                "2*x+2", "Try to -2 from the response", 2, "2 * x + 2");
 
         DigestRiddleImpl r11 = new DigestRiddleImpl("Enter a number and figure out the function based on the response. "
                 + "You can try as many times as you like, but you only have 3 attempts to guess the function.",
-                "x > 12", "Lower than?", 1, "x > 12");
+                "x>12", "Lower than?", 1, "x > 12");
 
         DigestRiddleImpl r12 = new DigestRiddleImpl("Enter a number and figure out the function based on the response. "
                 + "You can try as many times as you like, but you only have 3 attempts to guess the function.",
-                "x % x", "Modulus", 3, "x % x");
+                "x%x", "Modulus", 3, "x % x");
 
         DigestRiddleImpl r13 = new DigestRiddleImpl("Enter a number and figure out the function based on the response. "
                 + "You can try as many times as you like, but you only have 3 attempts to guess the function.",
-                "x % 11", "Modulus", 3, "x % 11");
+                "x%11", "Modulus", 3, "x % 11");
 
         DigestRiddleImpl r14 = new DigestRiddleImpl("Enter a number and figure out the function based on the response. "
                 + "You can try as many times as you like, but you only have 3 attempts to guess the function.",
-                "x.length() + 3", "Length of?", 4, "x.length() + 3");
+                "x.length()+3", "Length of?", 4, "String.valueOf(x).length() + 3");
 
         DigestRiddleImpl r15 = new DigestRiddleImpl("Enter a number and figure out the function based on the response. "
                 + "You can try as many times as you like, but you only have 3 attempts to guess the function.",
-                "x.charAt(0) * x.length()", "The first element in the input is most important", 5, "x.charAt(0) * x.length()");
+                "x.charAt(0)*x.length()", "The first element in the input is most important", 5, " Integer.parseInt(String.valueOf(riddleLevel).substring(0,1)) * String.valueOf(x).length()");
 
         DigestRiddleImpl r16 = new DigestRiddleImpl("Enter a number and figure out the function based on the response. "
                 + "You can try as many times as you like, but you only have 3 attempts to guess the function.",
-                "365 / x", "Think of how many days there is in a year", 4, "350 / x");
+                "365/x", "Think of how many days there is in a year", 4, "350 / x");
+        
+        
+        List<RiddleImpl> riddles = new ArrayList<>();
+        
+        
 
-//        user.addAttempt(attempt);
-////        riddle.addAttempt(attempt);
-//     
-//
-//        try {
-//            em.getTransaction().begin();
-//            em.persist(user);
-//            em.getTransaction().commit();
-//            
-////            em.persist(user);
-////            em.getTransaction().commit();
-//            
-//            
-//
-//        } finally {
-//            em.close();
-//        }
+        riddles.add(r);
+        riddles.add(r2);
+        riddles.add(r3);
+        riddles.add(r4);
+        riddles.add(r5);
+        riddles.add(r6);
+        riddles.add(r7);
+        riddles.add(r8);
+        riddles.add(r9);
+        riddles.add(r10);
+        riddles.add(r11);
+        riddles.add(r12);
+        riddles.add(r13);
+        riddles.add(r14);
+        riddles.add(r15);
+        riddles.add(r16);
+        
+        
+        
+
+
+     
+
+        try {
+            em.getTransaction().begin();
+            for (RiddleImpl riddle : riddles) {
+
+              em.persist(riddle);
+                System.out.println("one more in the database");
+            }
+            em.getTransaction().commit();
+            
+
+        } finally {
+            em.close();
+        }
     }
 
 }

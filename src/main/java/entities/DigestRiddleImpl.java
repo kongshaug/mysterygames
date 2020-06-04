@@ -13,6 +13,7 @@ import javax.persistence.NamedQuery;
 import javax.persistence.Table;
 import groovy.util.Eval;
 import javax.persistence.Column;
+import javax.ws.rs.WebApplicationException;
 
 /**
  *
@@ -36,6 +37,7 @@ class DigestRiddleImpl extends RiddleImpl implements Serializable, DigestRiddle 
         this.hint = hint;
         this.riddleLevel = riddleLevel;
         this.funct = funct;
+       
     }
 
     public String getFun() {
@@ -48,10 +50,20 @@ class DigestRiddleImpl extends RiddleImpl implements Serializable, DigestRiddle 
 
     @Override
     public String digest(String input) {
-        String output = Eval.x(input, this.funct).toString();
-        return output;
-
+        try {
+        int i = Integer.parseInt(input);
+        String output = Eval.x(i, this.funct).toString();
+        return output; 
+        } catch (Exception e) {
+            throw new WebApplicationException("Input must be a number", 400);
+        }
     }
+    @Override
+    public boolean validate(String answer) {
+
+        return answer.replaceAll(" ","").equals(this.answer.replaceAll(" ","")) || answer.replaceAll(" ","").equals(this.funct.replaceAll(" ",""));
+    }
+    
 
     @Override
     public RiddleDTO toDTO() {
