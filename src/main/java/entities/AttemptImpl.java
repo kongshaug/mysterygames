@@ -6,7 +6,9 @@
 package entities;
 
 import entities.interfaces.Attempt;
+import entities.interfaces.User;
 import enums.Status;
+import java.util.Objects;
 import javax.persistence.Column;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
@@ -51,5 +53,5 @@ abstract class AttemptImpl implements Attempt {
         this.setStatus(attempt.getStatus());
 
     }
-   
+  
 }

@@ -9,8 +9,6 @@ import entities.EntityFactoryImpl;
 import entities.interfaces.EntityFactory;
 import errorhandling.NotFoundException;
 import java.util.List;
-import javax.persistence.EntityManager;
-import javax.persistence.EntityManagerFactory;
 import facades.interfaces.ScoreBoard;
 import javax.ws.rs.WebApplicationException;
 import entities.interfaces.User;

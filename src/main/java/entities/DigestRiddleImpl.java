@@ -14,6 +14,7 @@ import javax.persistence.Table;
 import groovy.util.Eval;
 import javax.persistence.Column;
 import javax.ws.rs.WebApplicationException;
+import org.codehaus.groovy.control.CompilationFailedException;
 
 /**
  *
@@ -54,7 +55,7 @@ class DigestRiddleImpl extends RiddleImpl implements Serializable, DigestRiddle 
         int i = Integer.parseInt(input);
         String output = Eval.x(i, this.funct).toString();
         return output; 
-        } catch (Exception e) {
+        } catch (NumberFormatException | CompilationFailedException e) {
             throw new WebApplicationException("Input must be a number", 400);
         }
     }
@@ -67,7 +68,7 @@ class DigestRiddleImpl extends RiddleImpl implements Serializable, DigestRiddle 
 
     @Override
     public RiddleDTO toDTO() {
-        return new RiddleDTO(this);
+        return new DigestRiddleDTO(this);
     }
 
 }

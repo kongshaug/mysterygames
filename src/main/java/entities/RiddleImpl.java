@@ -115,7 +115,7 @@ abstract class RiddleImpl implements Riddle {
 
     @Override
     public String hint() {
-        return hint;
+        return this.hint;
     }
 
     @Override

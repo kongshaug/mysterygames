@@ -14,5 +14,5 @@ public interface FacadeFactory {
     public RiddleFacade getRiddleFacade();
     
     public ScoreBoard getScoreBoard();
-    
+       
 }

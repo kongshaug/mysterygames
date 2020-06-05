@@ -47,7 +47,7 @@ class OptRiddleImpl extends RiddleImpl implements Serializable {
 
     @Override
     public RiddleDTO toDTO() {
-        return new RiddleDTO(this);
+        return new OptRiddleDTO(this);
     }
 
 }

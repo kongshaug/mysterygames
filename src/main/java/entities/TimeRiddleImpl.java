@@ -52,7 +52,7 @@ class TimeRiddleImpl extends RiddleImpl implements Serializable, TimeRiddle {
 
     @Override
     public RiddleDTO toDTO() {
-        return new RiddleDTO(this);
+        return new TimeRiddleDTO(this);
     }
 
 }

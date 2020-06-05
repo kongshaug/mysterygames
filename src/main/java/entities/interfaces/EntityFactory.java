@@ -22,7 +22,7 @@ public interface EntityFactory {
 
     public User addUser(String username);
 
-    public User updateUser(User newUser, Attempt newAttempt) throws NotFoundException;
+    public Attempt update(Attempt newAttempt) throws NotFoundException;
 
     public List<User> getAllUsers() throws NotFoundException;
 
@@ -34,6 +34,8 @@ public interface EntityFactory {
 
     public void updateUser(User newUser) throws NotFoundException;
     
-    public boolean userTriedRiddle(UUID id, Set<Attempt> attempts);
+    public boolean userTriedRiddle(UUID id, List<Attempt> attempts);
+    
+    public void populateRiddles();
 
 }

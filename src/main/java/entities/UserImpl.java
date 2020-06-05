@@ -7,8 +7,11 @@ package entities;
 
 import entities.interfaces.Attempt;
 import entities.interfaces.User;
+import enums.Status;
 import java.io.Serializable;
+import java.util.ArrayList;
 import java.util.HashSet;
+import java.util.List;
 import java.util.Objects;
 import java.util.Set;
 import java.util.UUID;
@@ -17,10 +20,8 @@ import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
-import javax.persistence.NamedQuery;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
-import javax.persistence.Transient;
 
 /**
  *
@@ -39,16 +40,14 @@ class UserImpl implements Serializable, User {
     private int highScore;
 
     @OneToMany(cascade = {CascadeType.PERSIST, CascadeType.MERGE}, mappedBy = "user")
-    private Set<OptAttemptImpl> optAttempts = new HashSet();
+    private List<OptAttemptImpl> optAttempts = new ArrayList();
 
     @OneToMany(cascade = {CascadeType.PERSIST, CascadeType.MERGE}, mappedBy = "user")
-    private Set<TimeAttemptImpl> timeAttempts = new HashSet();
+    private List<TimeAttemptImpl> timeAttempts = new ArrayList();
 
     @OneToMany(cascade = {CascadeType.PERSIST, CascadeType.MERGE}, mappedBy = "user")
-    private Set<DigestAttemptImpl> digestAttempts = new HashSet();
+    private List<DigestAttemptImpl> digestAttempts = new ArrayList();
 
-    @Transient
-    private Set<Attempt> attempts;
 
     UserImpl() {
     }
@@ -57,14 +56,6 @@ class UserImpl implements Serializable, User {
         this.username = username;
         this.highScore = 0;
         this.userLevel = 1;
-
-        this.attempts = new HashSet<Attempt>() {
-            {
-                addAll(optAttempts);
-                addAll(timeAttempts);
-                addAll(digestAttempts);
-            }
-        };
     }
 
     @Override
@@ -101,37 +92,41 @@ class UserImpl implements Serializable, User {
         this.highScore = highScore;
     }
 
-    public Set<OptAttemptImpl> getOptAttempts() {
+    public List<OptAttemptImpl> getOptAttempts() {
         return optAttempts;
     }
 
-    public void setOptAttempts(Set<OptAttemptImpl> attempts) {
-        this.optAttempts = attempts;
+    public void setOptAttempts(List<OptAttemptImpl> optAttempts) {
+        this.optAttempts = optAttempts;
     }
 
-    public Set<TimeAttemptImpl> getTimeAttempts() {
+    public List<TimeAttemptImpl> getTimeAttempts() {
         return timeAttempts;
     }
 
-    public void setTimeAttempts(Set<TimeAttemptImpl> attempts) {
-        this.timeAttempts = attempts;
+    public void setTimeAttempts(List<TimeAttemptImpl> timeAttempts) {
+        this.timeAttempts = timeAttempts;
     }
 
-    public Set<DigestAttemptImpl> getDigestAttempts() {
+    public List<DigestAttemptImpl> getDigestAttempts() {
         return digestAttempts;
     }
 
-    public void setDigestAttempts(Set<DigestAttemptImpl> digestAttempts) {
+    public void setDigestAttempts(List<DigestAttemptImpl> digestAttempts) {
         this.digestAttempts = digestAttempts;
     }
 
-    public Set<Attempt> getAttempts() {
+    public List<Attempt> getAttempts() {
+        List<Attempt> attempts = new ArrayList<>();
+        attempts.addAll(this.digestAttempts);
+        attempts.addAll(this.optAttempts);
+        attempts.addAll(this.timeAttempts);
+        
         return attempts;
     }
 
     @Override
     public void addAttempt(Attempt attempt) {
-
         if (attempt instanceof OptAttemptImpl) {
             this.optAttempts.add((OptAttemptImpl) attempt);
         } else if (attempt instanceof TimeAttemptImpl) {
@@ -165,15 +160,22 @@ class UserImpl implements Serializable, User {
     }
 
     @Override
-    public Attempt getAttempt(UUID id) {
-
-        for (Attempt a : attempts) {
-            if (a.riddle().Id().equals(id)) {
+    public Attempt getAttempt(UUID id) {  
+        for (Attempt a : this.getAttempts()) {
+            if (a.riddle().Id().equals(id) && a.getStatus().equals(Status.PENDING)) {
                 return a;
             }
         }
         return null;
-
+    }
+    
+    public Attempt getAttempt(Attempt attempt) {  
+        for (Attempt a : this.getAttempts()) {
+            if (a.equals(attempt)) {
+                return a;
+            }
+        }
+        return null;
     }
 
     @Override

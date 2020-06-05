@@ -50,8 +50,8 @@ class RiddleFacadeImpl implements RiddleFacade {
         User user = FACTORY.getUser(id);
         Attempt attempt = user.getAttempt(riddle_id);
         attempt.validateAnswer(answer);
-        user = FACTORY.updateUser(user, attempt);
-        return user.getAttempt(riddle_id);
+        attempt = FACTORY.update(attempt);
+        return attempt;
 
     }
 
@@ -72,6 +72,11 @@ class RiddleFacadeImpl implements RiddleFacade {
         DigestRiddle riddle = FACTORY.getDigestRiddle(riddle_id);
         return riddle.digest(input);
 
+    }
+
+    @Override
+    public void populate() {
+        FACTORY.populateRiddles();
     }
 
 }

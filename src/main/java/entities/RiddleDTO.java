@@ -5,36 +5,17 @@
  */
 package entities;
 
-import java.util.List;
 import java.util.UUID;
 
 /**
  *
  * @author sofieamalielandt
  */
-public class RiddleDTO {
+public abstract class RiddleDTO {
 
-    private UUID id;
-    private String riddle;
-    private long time;
-    List<String> options;
+    protected UUID id;
+    protected String riddle;
 
-    RiddleDTO(DigestRiddleImpl riddle) {
-        this.id = riddle.Id();
-        this.riddle = riddle.getRiddle();
-    }
-
-    RiddleDTO(TimeRiddleImpl riddle) {
-        this.id = riddle.Id();
-        this.riddle = riddle.getRiddle();
-        this.time = riddle.time();
-    }
-    
-    RiddleDTO(OptRiddleImpl riddle) {
-        this.id = riddle.Id();
-        this.riddle = riddle.getRiddle();
-        this.options = riddle.getOptions();
-    }
 
     public UUID getId() {
         return id;
@@ -51,23 +32,5 @@ public class RiddleDTO {
     public void setRiddle(String riddle) {
         this.riddle = riddle;
     }
-
-    public long getTime() {
-        return time;
-    }
-
-    public void setTime(long time) {
-        this.time = time;
-    }
-
-    public List<String> getOptions() {
-        return options;
-    }
-
-    public void setOptions(List<String> options) {
-        this.options = options;
-    }
-    
-    
 
 }

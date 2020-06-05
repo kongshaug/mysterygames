@@ -5,38 +5,18 @@
  */
 package entities;
 
-import entities.interfaces.Attempt;
 import enums.Status;
 
 /**
  *
  * @author sofieamalielandt
  */
-public class AttemptDTO {
+public abstract class AttemptDTO {
 
-    private UserDTO user;
-    private RiddleDTO riddle;
-    private Status status;
-    private int tries;
-      
-    AttemptDTO(DigestAttemptImpl attempt) {
-       this.riddle = attempt.getRiddle().toDTO();
-       this.user = attempt.getUser().toDTO();
-       this.status = attempt.getStatus();
-       this.tries = attempt.getTries();
-    }
+    protected UserDTO user;
+    protected RiddleDTO riddle;
+    protected Status status;
     
-    AttemptDTO(TimeAttemptImpl attempt) {
-       this.riddle = attempt.getRiddle().toDTO();
-       this.user = attempt.getUser().toDTO();
-       this.status = attempt.getStatus();
-    }
-    
-    AttemptDTO(OptAttemptImpl attempt) {
-       this.riddle = attempt.getRiddle().toDTO();
-       this.user = attempt.getUser().toDTO();
-       this.status = attempt.getStatus();
-    }
 
     public UserDTO getUser() {
         return user;
@@ -62,14 +42,4 @@ public class AttemptDTO {
         this.status = status;
     }
 
-    public int getTries() {
-        return tries;
-    }
-
-    public void setTries(int tries) {
-        this.tries = tries;
-    }
-    
-    
- 
 }

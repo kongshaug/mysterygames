@@ -1,5 +1,8 @@
 package rest;
 
+import com.google.gson.Gson;
+import com.google.gson.GsonBuilder;
+import com.google.gson.JsonParser;
 import entities.AttemptDTO;
 import entities.UserDTO;
 import entities.interfaces.Attempt;
@@ -29,6 +32,8 @@ public class MysteryResource {
     private static final FacadeFactory FACTORY = FacadeFactoryImpl.getFacadeFactory();
     private static final RiddleFacade FACADE = FACTORY.getRiddleFacade();
     private static final ScoreBoard SCOREBOARD = FACTORY.getScoreBoard();
+    private static final JsonParser JP = new JsonParser();
+     private static final Gson gson = new GsonBuilder().setPrettyPrinting().create();
 
     @GET
     @Produces({MediaType.APPLICATION_JSON})
@@ -38,16 +43,17 @@ public class MysteryResource {
 
     // Takes a user id and generates an UserAttempt in the database - returns a random riddle
     // corresponding to the user's level
-    @GET
+    @POST
     @Path("/riddle/{id}")
     @Produces({MediaType.APPLICATION_JSON})
-    public AttemptDTO getRiddle(@PathParam("id") long id) {
+    public String getRiddle(@PathParam("id") long id) {
         try {
 
             Attempt attempt = FACADE.newAttempt(id);
-            return attempt.toDTO();
+            AttemptDTO a = attempt.toDTO();
+            return gson.toJson(a);
 
-        } catch (NotFoundException | WebApplicationException e) {
+        } catch (NotFoundException e) {
 
             throw new WebApplicationException(e.getMessage(), 400);
         }
@@ -60,10 +66,12 @@ public class MysteryResource {
     @Path("/riddle/{riddle_id}/{user_id}")
     @Consumes({MediaType.APPLICATION_JSON})
     @Produces({MediaType.APPLICATION_JSON})
-    public AttemptDTO answer(@PathParam("riddle_id") UUID riddle_id, @PathParam("user_id") long id, String answer) {
+    public String answer(@PathParam("riddle_id") UUID riddle_id, @PathParam("user_id") long id, String answer) {
         try {
+            
+            answer = JP.parse(answer).getAsJsonObject().get("answer").getAsString();
             Attempt attempt = FACADE.validateAnswer(riddle_id, id, answer);
-            return attempt.toDTO();
+            return gson.toJson(attempt.toDTO());
 
         } catch (NotFoundException | WebApplicationException e) {
 
@@ -74,13 +82,15 @@ public class MysteryResource {
 
 //    Takes an username, creates an user in the database - returns the User
     @POST
-    @Path("user")
+    @Path("/user")
     @Consumes({MediaType.APPLICATION_JSON})
     @Produces({MediaType.APPLICATION_JSON})
-    public UserDTO createUser(String username) {
+    public String createUser(String username) {
         try {
+            
+            username = JP.parse(username).getAsJsonObject().get("username").getAsString();
             User user = SCOREBOARD.createUser(username);
-            return user.toDTO();
+            return gson.toJson(user.toDTO());
 
         } catch (WebApplicationException e) {
 
@@ -111,7 +121,7 @@ public class MysteryResource {
     public List<UserDTO> getScoreBoard() {
         try {
             List<User> users = SCOREBOARD.get();
-            List<UserDTO> usersDTO = users.stream().sorted(Comparator.comparing(User::highScore)).map(user -> user.toDTO()).collect(Collectors.toList());
+            List<UserDTO> usersDTO = users.stream().sorted(Comparator.comparing(User::highScore).reversed()).map(user -> user.toDTO()).collect(Collectors.toList());
             return usersDTO;
 
         } catch (NotFoundException | WebApplicationException e) {
@@ -120,19 +130,28 @@ public class MysteryResource {
     }
 
 //  Return digest of a riddle
-    @PUT
+    @GET
     @Path("/digest/{riddle_id}")
     @Consumes({MediaType.APPLICATION_JSON})
     @Produces({MediaType.APPLICATION_JSON})
     public String digest(@PathParam("riddle_id") UUID riddle_id, String input) {
         try {
-
+            input = JP.parse(input).getAsJsonObject().get("input").getAsString();
             return FACADE.digestInput(riddle_id, input);
 
         } catch (NotFoundException | WebApplicationException e) {
 
             throw new WebApplicationException(e.getMessage(), 400);
         }
+    }
+    
+    @POST
+    @Path("/riddles/populate")
+    @Produces({MediaType.APPLICATION_JSON})
+    public String populate() {
+            FACADE.populate();
+            return "The way you populate me...";
+ 
     }
 
 }

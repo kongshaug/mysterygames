@@ -8,6 +8,7 @@ package entities;
 import entities.interfaces.Attempt;
 import entities.interfaces.DigestAttempt;
 import entities.interfaces.Riddle;
+import entities.interfaces.User;
 import enums.Status;
 import java.io.Serializable;
 import java.util.Objects;
@@ -124,9 +125,10 @@ class DigestAttemptImpl extends AttemptImpl implements Serializable, DigestAttem
 
     @Override
     public int hashCode() {
-        int hash = 5;
-        hash = 71 * hash + Objects.hashCode(this.riddle);
-        hash = 71 * hash + Objects.hashCode(this.user);
+        int hash = 7;
+        hash = 31 * hash + Objects.hashCode(this.id);
+        hash = 31 * hash + Objects.hashCode(this.riddle);
+        hash = 31 * hash + Objects.hashCode(this.user);
         return hash;
     }
 
@@ -142,6 +144,9 @@ class DigestAttemptImpl extends AttemptImpl implements Serializable, DigestAttem
             return false;
         }
         final DigestAttemptImpl other = (DigestAttemptImpl) obj;
+        if(!Objects.equals(this.id, other.id)){
+            return false;
+        }
         if (!Objects.equals(this.riddle, other.riddle)) {
             return false;
         }
@@ -157,7 +162,11 @@ class DigestAttemptImpl extends AttemptImpl implements Serializable, DigestAttem
 
     @Override
     public AttemptDTO toDTO() {
-        return new AttemptDTO(this);
+        return new DigestAttemptDTO(this);
     }
 
+    @Override
+    public User user() {
+        return this.user;
+    }
 }

@@ -7,6 +7,7 @@ package entities;
 
 import entities.interfaces.Riddle;
 import entities.interfaces.TimeAttempt;
+import entities.interfaces.User;
 import enums.Status;
 import java.io.Serializable;
 import java.time.Duration;
@@ -128,6 +129,7 @@ class TimeAttemptImpl extends AttemptImpl implements Serializable, TimeAttempt {
     @Override
     public int hashCode() {
         int hash = 3;
+        hash = 41 * hash + Objects.hashCode(this.id);
         hash = 41 * hash + Objects.hashCode(this.riddle);
         hash = 41 * hash + Objects.hashCode(this.user);
         return hash;
@@ -145,6 +147,9 @@ class TimeAttemptImpl extends AttemptImpl implements Serializable, TimeAttempt {
             return false;
         }
         final TimeAttemptImpl other = (TimeAttemptImpl) obj;
+        if(!Objects.equals(this.id, other.id)){
+            return false;
+        }
         if (!Objects.equals(this.riddle, other.riddle)) {
             return false;
         }
@@ -153,7 +158,13 @@ class TimeAttemptImpl extends AttemptImpl implements Serializable, TimeAttempt {
 
     @Override
     public AttemptDTO toDTO() {
-        return new AttemptDTO(this);
+        AttemptDTO DTO = new TimeOptAttemptDTO(this);
+        return DTO;
+    }
+
+    @Override
+    public User user() {
+        return this.user;
     }
 
 }

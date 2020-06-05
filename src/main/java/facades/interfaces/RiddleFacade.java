@@ -6,7 +6,6 @@
 package facades.interfaces;
 
 import entities.interfaces.Attempt;
-import entities.interfaces.DigestRiddle;
 import errorhandling.NotFoundException;
 import java.util.UUID;
 
@@ -24,5 +23,7 @@ public interface RiddleFacade {
     public String hint(UUID riddle_id, long user_id) throws NotFoundException;
 
     public String digestInput(UUID riddle_id, String input) throws NotFoundException;
+    
+    public void populate();
 
 }
