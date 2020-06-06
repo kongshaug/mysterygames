@@ -365,11 +365,11 @@ public class EntityFactoryImpl implements EntityFactory {
 
         DigestRiddleImpl r15 = new DigestRiddleImpl("Enter a number and figure out the function based on the response. "
                 + "You can try as many times as you like, but you only have 3 attempts to guess the function.",
-                "x.charAt(0)*x.length()", "The first element in the input is most important", 5, " Integer.parseInt(String.valueOf(riddleLevel).substring(0,1)) * String.valueOf(x).length()");
+                "x.charAt(0)*x.length()", "The first element in the input is most important", 5, " Integer.parseInt(String.valueOf(x).substring(0,1)) * String.valueOf(x).length()");
 
         DigestRiddleImpl r16 = new DigestRiddleImpl("Enter a number and figure out the function based on the response. "
                 + "You can try as many times as you like, but you only have 3 attempts to guess the function.",
-                "365/x", "Think of how many days there is in a year", 4, "350 / x");
+                "365/x", "Think of how many days there is in a year", 4, "365 / x");
 
         List<RiddleImpl> DBriddles = new ArrayList<>();
 
