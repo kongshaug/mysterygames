@@ -92,6 +92,32 @@ abstract class RiddleImpl implements Riddle {
     }
 
     @Override
+    public String hint() {
+        return this.hint;
+    }
+
+    @Override
+    public int level() {
+        return riddleLevel;
+    }
+
+    @Override
+    public int points() {
+        return riddleLevel * 10;
+    }
+
+    @Override
+    public boolean validate(String answer) {
+
+        return answer.toLowerCase().equals(this.answer.toLowerCase());
+    }
+    
+    @Override
+    public UUID Id() {
+        return uid;
+    }  
+    
+    @Override
     public int hashCode() {
         int hash = 7;
         hash = 97 * hash + Objects.hashCode(this.uid);
@@ -112,30 +138,4 @@ abstract class RiddleImpl implements Riddle {
         final RiddleImpl other = (RiddleImpl) obj;
         return Objects.equals(this.uid, other.uid);
     }
-
-    @Override
-    public String hint() {
-        return this.hint;
-    }
-
-    @Override
-    public int level() {
-        return riddleLevel;
-    }
-
-    @Override
-    public int points() {
-        return riddleLevel * 10;
-    }
-
-    @Override
-    public boolean validate(String answer) {
-
-        return answer.equals(this.answer);
-    }
-    
-    @Override
-    public UUID Id() {
-        return uid;
-    }  
 }

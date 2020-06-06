@@ -219,7 +219,7 @@ public class EntityFactoryImpl implements EntityFactory {
             }
 
             riddle = getRiddle(user);
-
+            
             if (riddle instanceof DigestRiddleImpl) {
                 attempt = new DigestAttemptImpl((DigestRiddleImpl) riddle, user);
             } else if (riddle instanceof OptRiddleImpl) {
@@ -313,9 +313,9 @@ public class EntityFactoryImpl implements EntityFactory {
                 "My fathers son = himself", 3, options2);
 
         List<String> options3 = new ArrayList();
-        options2.add("2");
-        options2.add("3");
-        options2.add("6");
+        options3.add("2");
+        options3.add("3");
+        options3.add("6");
 
         OptRiddleImpl r3 = new OptRiddleImpl("A man is asked what his daughters look like. He answers: "
                 + "\"They are all blonde, but two, all brunettes, but two and all redheads but two\". "
@@ -341,7 +341,7 @@ public class EntityFactoryImpl implements EntityFactory {
                 + "1. Jacks’s photo got at least 85 likes\n"
                 + "2. Jacks’s phoito got fever than 85 likes\n"
                 + "3. Jack’s photo got at least 1 like",
-                "0 likes", "I Dont think Jack has that many friends", 3, 90);
+                "0", "I Dont think Jack has that many friends", 3, 90);
 
         DigestRiddleImpl r10 = new DigestRiddleImpl("Enter a number and figure out the function based on the response. "
                 + "You can try as many times as you like, but you only have 3 attempts to guess the function.",
@@ -371,32 +371,30 @@ public class EntityFactoryImpl implements EntityFactory {
                 + "You can try as many times as you like, but you only have 3 attempts to guess the function.",
                 "365/x", "Think of how many days there is in a year", 4, "350 / x");
 
-        List<RiddleImpl> riddles = new ArrayList<>();
+        List<RiddleImpl> DBriddles = new ArrayList<>();
 
-        riddles.add(r);
-        riddles.add(r2);
-        riddles.add(r3);
-        riddles.add(r4);
-        riddles.add(r5);
-        riddles.add(r6);
-        riddles.add(r7);
-        riddles.add(r8);
-        riddles.add(r9);
-        riddles.add(r10);
-        riddles.add(r11);
-        riddles.add(r12);
-        riddles.add(r13);
-        riddles.add(r14);
-        riddles.add(r15);
-        riddles.add(r16);
+        DBriddles.add(r);
+        DBriddles.add(r2);
+        DBriddles.add(r3);
+        DBriddles.add(r4);
+        DBriddles.add(r5);
+        DBriddles.add(r6);
+        DBriddles.add(r7);
+        DBriddles.add(r8);
+        DBriddles.add(r9);
+        DBriddles.add(r10);
+        DBriddles.add(r11);
+        DBriddles.add(r12);
+        DBriddles.add(r13);
+        DBriddles.add(r14);
+        DBriddles.add(r15);
+        DBriddles.add(r16);
 
         try {
             em.getTransaction().begin();
-            for (RiddleImpl riddle : riddles) {
-
+            DBriddles.forEach((riddle) -> {
                 em.persist(riddle);
-                System.out.println("one more in the database");
-            }
+            });
             em.getTransaction().commit();
 
         } finally {

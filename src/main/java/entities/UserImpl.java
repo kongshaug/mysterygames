@@ -10,18 +10,18 @@ import entities.interfaces.User;
 import enums.Status;
 import java.io.Serializable;
 import java.util.ArrayList;
-import java.util.HashSet;
 import java.util.List;
 import java.util.Objects;
-import java.util.Set;
 import java.util.UUID;
 import javax.persistence.CascadeType;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.NamedQuery;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
+import javax.persistence.Transient;
 
 /**
  *
@@ -29,6 +29,7 @@ import javax.persistence.Table;
  */
 @Entity
 @Table(name = "USERS")
+@NamedQuery(name = "UserImpl.deleteAllRows", query = "DELETE from UserImpl")
 class UserImpl implements Serializable, User {
 
     private static final long serialVersionUID = 1L;
@@ -38,6 +39,8 @@ class UserImpl implements Serializable, User {
     private String username;
     private int userLevel;
     private int highScore;
+    @Transient
+    private int maxLevel = 5;
 
     @OneToMany(cascade = {CascadeType.PERSIST, CascadeType.MERGE}, mappedBy = "user")
     private List<OptAttemptImpl> optAttempts = new ArrayList();
@@ -47,7 +50,6 @@ class UserImpl implements Serializable, User {
 
     @OneToMany(cascade = {CascadeType.PERSIST, CascadeType.MERGE}, mappedBy = "user")
     private List<DigestAttemptImpl> digestAttempts = new ArrayList();
-
 
     UserImpl() {
     }
@@ -116,12 +118,16 @@ class UserImpl implements Serializable, User {
         this.digestAttempts = digestAttempts;
     }
 
+    public int getMaxLevel() {
+        return maxLevel;
+    }
+
     public List<Attempt> getAttempts() {
         List<Attempt> attempts = new ArrayList<>();
         attempts.addAll(this.digestAttempts);
         attempts.addAll(this.optAttempts);
         attempts.addAll(this.timeAttempts);
-        
+
         return attempts;
     }
 
@@ -150,8 +156,12 @@ class UserImpl implements Serializable, User {
 
     @Override
     public void levelUp(int points) {
-        this.userLevel++;
-        this.addPoints(points);
+        if (this.userLevel == this.maxLevel) {
+            this.addPoints(points);
+        } else {
+            this.userLevel++;
+            this.addPoints(points);
+        }
     }
 
     @Override
@@ -160,7 +170,7 @@ class UserImpl implements Serializable, User {
     }
 
     @Override
-    public Attempt getAttempt(UUID id) {  
+    public Attempt getAttempt(UUID id) {
         for (Attempt a : this.getAttempts()) {
             if (a.riddle().Id().equals(id) && a.getStatus().equals(Status.PENDING)) {
                 return a;
@@ -168,8 +178,8 @@ class UserImpl implements Serializable, User {
         }
         return null;
     }
-    
-    public Attempt getAttempt(Attempt attempt) {  
+
+    public Attempt getAttempt(Attempt attempt) {
         for (Attempt a : this.getAttempts()) {
             if (a.equals(attempt)) {
                 return a;
@@ -181,6 +191,11 @@ class UserImpl implements Serializable, User {
     @Override
     public int highScore() {
         return highScore;
+    }
+
+    @Override
+    public UserDTO toDTO() {
+        return new UserDTO(this);
     }
 
     @Override
@@ -207,11 +222,6 @@ class UserImpl implements Serializable, User {
             return false;
         }
         return Objects.equals(this.username, other.username);
-    }
-
-    @Override
-    public UserDTO toDTO() {
-        return new UserDTO(this);
     }
 
 }

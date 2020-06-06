@@ -62,10 +62,9 @@ class DigestRiddleImpl extends RiddleImpl implements Serializable, DigestRiddle 
     @Override
     public boolean validate(String answer) {
 
-        return answer.replaceAll(" ","").equals(this.answer.replaceAll(" ","")) || answer.replaceAll(" ","").equals(this.funct.replaceAll(" ",""));
+        return answer.toLowerCase().replaceAll(" ","").equals(this.answer.toLowerCase().replaceAll(" ","")) || answer.toLowerCase().replaceAll(" ","").equals(this.funct.toLowerCase().replaceAll(" ",""));
     }
     
-
     @Override
     public RiddleDTO toDTO() {
         return new DigestRiddleDTO(this);

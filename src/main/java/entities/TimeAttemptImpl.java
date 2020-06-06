@@ -90,8 +90,12 @@ class TimeAttemptImpl extends AttemptImpl implements Serializable, TimeAttempt {
 
             if (solved) {
                 int points = this.calcPoints();
+                if (user.level() == user.getMaxLevel()) {
+                    this.status = Status.FINISHED;
+                } else {
+                    this.status = Status.SOLVED;
+                }
                 this.user.levelUp(points);
-                this.status = Status.SOLVED;
             }
         } else {
             this.status = Status.FAILED;
@@ -127,6 +131,17 @@ class TimeAttemptImpl extends AttemptImpl implements Serializable, TimeAttempt {
     }
 
     @Override
+    public AttemptDTO toDTO() {
+        AttemptDTO DTO = new TimeOptAttemptDTO(this);
+        return DTO;
+    }
+
+    @Override
+    public User user() {
+        return this.user;
+    }
+
+    @Override
     public int hashCode() {
         int hash = 3;
         hash = 41 * hash + Objects.hashCode(this.id);
@@ -147,24 +162,13 @@ class TimeAttemptImpl extends AttemptImpl implements Serializable, TimeAttempt {
             return false;
         }
         final TimeAttemptImpl other = (TimeAttemptImpl) obj;
-        if(!Objects.equals(this.id, other.id)){
+        if (!Objects.equals(this.id, other.id)) {
             return false;
         }
         if (!Objects.equals(this.riddle, other.riddle)) {
             return false;
         }
         return (!Objects.equals(this.user, other.user));
-    }
-
-    @Override
-    public AttemptDTO toDTO() {
-        AttemptDTO DTO = new TimeOptAttemptDTO(this);
-        return DTO;
-    }
-
-    @Override
-    public User user() {
-        return this.user;
     }
 
 }

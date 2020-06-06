@@ -15,8 +15,9 @@ import javax.ws.rs.WebApplicationException;
  * @author benja
  */
 public interface ScoreBoard {
-    
+
     public List<User> get() throws NotFoundException;
+
     public User createUser(String username) throws WebApplicationException;
-   
+
 }

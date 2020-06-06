@@ -10,7 +10,7 @@ package entities.interfaces;
  * @author sofieamalielandt
  */
 public interface TimeRiddle {
-    
-    public long time(); 
-    
+
+    public long time();
+
 }

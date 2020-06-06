@@ -29,9 +29,9 @@ public interface User {
     public int highScore();
 
     public Long getId();
-    
+
     public String getUsername();
-    
+
     public UserDTO toDTO();
 
 }

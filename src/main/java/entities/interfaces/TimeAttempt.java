@@ -10,7 +10,7 @@ package entities.interfaces;
  * @author sofieamalielandt
  */
 public interface TimeAttempt {
-    
+
     public void calcTime();
-    
+
 }

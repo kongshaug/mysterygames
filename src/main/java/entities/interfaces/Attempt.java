@@ -23,9 +23,9 @@ public interface Attempt {
     public Riddle riddle();
 
     public void update(Attempt attempt);
-    
+
     public AttemptDTO toDTO();
-    
+
     public User user();
 
 }

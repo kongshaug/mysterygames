@@ -20,15 +20,13 @@ import javax.persistence.ManyToOne;
 import javax.persistence.NamedQuery;
 import javax.persistence.Table;
 
-
-
-
 /**
  *
  * @author aamandajuhl
  */
 @Entity
 @Table(name = "DIGESTATTEMPT")
+@NamedQuery(name = "DigestAttemptImpl.deleteAllRows", query = "DELETE from DigestAttemptImpl")
 class DigestAttemptImpl extends AttemptImpl implements Serializable, DigestAttempt {
 
     @Column(name = "tries", updatable = true, nullable = false)
@@ -37,7 +35,7 @@ class DigestAttemptImpl extends AttemptImpl implements Serializable, DigestAttem
     @ManyToOne(cascade = {CascadeType.PERSIST, CascadeType.MERGE}, optional = false)
     @JoinColumn(name = "riddle_ID", nullable = false, updatable = false)
     protected DigestRiddleImpl riddle;
-    
+
     @ManyToOne(optional = false)
     @JoinColumn(name = "user_ID", nullable = false, updatable = false)
     protected UserImpl user;
@@ -45,11 +43,11 @@ class DigestAttemptImpl extends AttemptImpl implements Serializable, DigestAttem
     DigestAttemptImpl() {
     }
 
-    DigestAttemptImpl(DigestRiddleImpl riddle, UserImpl user ) {
+    DigestAttemptImpl(DigestRiddleImpl riddle, UserImpl user) {
         this.tries = 3;
         this.riddle = riddle;
         this.user = user;
-       
+
     }
 
     public int getTries() {
@@ -77,6 +75,16 @@ class DigestAttemptImpl extends AttemptImpl implements Serializable, DigestAttem
     }
 
     @Override
+    public void newTry() {
+        this.tries--;
+    }
+
+    @Override
+    public boolean moreTries() {
+        return tries > 0;
+    }
+
+    @Override
     public void validateAnswer(String answer) {
 
         if (this.moreTries()) {
@@ -85,8 +93,13 @@ class DigestAttemptImpl extends AttemptImpl implements Serializable, DigestAttem
 
             if (solved) {
                 int points = this.calcPoints();
+                if (user.level() == user.getMaxLevel()) {
+                    this.status = Status.FINISHED;
+                } else {
+                    this.status = Status.SOLVED;
+                }
                 this.user.levelUp(points);
-                this.status = Status.SOLVED;
+
             } else if (!this.moreTries()) {
                 this.status = Status.FAILED;
             }
@@ -114,13 +127,20 @@ class DigestAttemptImpl extends AttemptImpl implements Serializable, DigestAttem
     }
 
     @Override
-    public void newTry() {
-        this.tries--;
+    public void update(Attempt attempt) {
+        this.setStatus(attempt.getStatus());
+        this.newTry();
+
     }
 
     @Override
-    public boolean moreTries() {
-        return tries > 0;
+    public AttemptDTO toDTO() {
+        return new DigestAttemptDTO(this);
+    }
+
+    @Override
+    public User user() {
+        return this.user;
     }
 
     @Override
@@ -144,29 +164,12 @@ class DigestAttemptImpl extends AttemptImpl implements Serializable, DigestAttem
             return false;
         }
         final DigestAttemptImpl other = (DigestAttemptImpl) obj;
-        if(!Objects.equals(this.id, other.id)){
+        if (!Objects.equals(this.id, other.id)) {
             return false;
         }
         if (!Objects.equals(this.riddle, other.riddle)) {
             return false;
         }
         return Objects.equals(this.user, other.user);
-    }
-
-    @Override
-    public void update(Attempt attempt) {
-        this.setStatus(attempt.getStatus());
-        this.newTry();
-
-    }
-
-    @Override
-    public AttemptDTO toDTO() {
-        return new DigestAttemptDTO(this);
-    }
-
-    @Override
-    public User user() {
-        return this.user;
     }
 }

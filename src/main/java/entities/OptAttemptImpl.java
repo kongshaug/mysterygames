@@ -64,9 +64,13 @@ class OptAttemptImpl extends AttemptImpl implements Serializable {
         boolean solved = this.riddle.validate(answer);
         if (solved) {
             int points = this.calcPoints();
+            if (user.level() == user.getMaxLevel()) {
+                this.status = Status.FINISHED;
+            } else {
+                this.status = Status.SOLVED;
+            }
             this.user.levelUp(points);
-            this.status = Status.SOLVED;
-            
+
         } else {
             this.status = Status.FAILED;
         }
@@ -80,6 +84,16 @@ class OptAttemptImpl extends AttemptImpl implements Serializable {
     @Override
     public Riddle riddle() {
         return this.riddle;
+    }
+
+    @Override
+    public AttemptDTO toDTO() {
+        return new TimeOptAttemptDTO(this);
+    }
+
+    @Override
+    public User user() {
+        return this.user;
     }
 
     @Override
@@ -103,23 +117,13 @@ class OptAttemptImpl extends AttemptImpl implements Serializable {
             return false;
         }
         final OptAttemptImpl other = (OptAttemptImpl) obj;
-        if(!Objects.equals(this.id, other.id)){
+        if (!Objects.equals(this.id, other.id)) {
             return false;
         }
         if (!Objects.equals(this.riddle, other.riddle)) {
             return false;
         }
         return (!Objects.equals(this.user, other.user));
-    }
-
-    @Override
-    public AttemptDTO toDTO() {
-        return new TimeOptAttemptDTO(this);
-    }
-    
-    @Override
-    public User user() {
-        return this.user;
     }
 
 }

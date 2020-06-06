@@ -33,7 +33,7 @@ public class MysteryResource {
     private static final RiddleFacade FACADE = FACTORY.getRiddleFacade();
     private static final ScoreBoard SCOREBOARD = FACTORY.getScoreBoard();
     private static final JsonParser JP = new JsonParser();
-     private static final Gson gson = new GsonBuilder().setPrettyPrinting().create();
+    private static final Gson gson = new GsonBuilder().setPrettyPrinting().create();
 
     @GET
     @Produces({MediaType.APPLICATION_JSON})
@@ -68,7 +68,7 @@ public class MysteryResource {
     @Produces({MediaType.APPLICATION_JSON})
     public String answer(@PathParam("riddle_id") UUID riddle_id, @PathParam("user_id") long id, String answer) {
         try {
-            
+
             answer = JP.parse(answer).getAsJsonObject().get("answer").getAsString();
             Attempt attempt = FACADE.validateAnswer(riddle_id, id, answer);
             return gson.toJson(attempt.toDTO());
@@ -87,7 +87,7 @@ public class MysteryResource {
     @Produces({MediaType.APPLICATION_JSON})
     public String createUser(String username) {
         try {
-            
+
             username = JP.parse(username).getAsJsonObject().get("username").getAsString();
             User user = SCOREBOARD.createUser(username);
             return gson.toJson(user.toDTO());
@@ -99,13 +99,13 @@ public class MysteryResource {
     }
 
 //    Takes a riddle_id and returns the hint of the riddle
-    @GET
+    @PUT
     @Path("/hint/{user_id}/{riddle_id}")
     @Produces({MediaType.APPLICATION_JSON})
     public String getHint(@PathParam("user_id") long id, @PathParam("riddle_id") UUID riddle_id) {
         try {
 
-            return FACADE.hint(riddle_id, id);
+            return gson.toJson(FACADE.hint(riddle_id, id));
 
         } catch (NotFoundException | WebApplicationException e) {
 
@@ -130,28 +130,28 @@ public class MysteryResource {
     }
 
 //  Return digest of a riddle
-    @GET
+    @PUT
     @Path("/digest/{riddle_id}")
     @Consumes({MediaType.APPLICATION_JSON})
     @Produces({MediaType.APPLICATION_JSON})
     public String digest(@PathParam("riddle_id") UUID riddle_id, String input) {
         try {
             input = JP.parse(input).getAsJsonObject().get("input").getAsString();
-            return FACADE.digestInput(riddle_id, input);
+            return gson.toJson(FACADE.digestInput(riddle_id, input));
 
         } catch (NotFoundException | WebApplicationException e) {
 
             throw new WebApplicationException(e.getMessage(), 400);
         }
     }
-    
+
     @POST
     @Path("/riddles/populate")
     @Produces({MediaType.APPLICATION_JSON})
     public String populate() {
-            FACADE.populate();
-            return "The way you populate me...";
- 
+        FACADE.populate();
+        return "The way you populate me...";
+
     }
 
 }

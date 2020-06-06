@@ -5,8 +5,6 @@
  */
 package facades;
 
-import javax.persistence.EntityManager;
-import javax.persistence.EntityManagerFactory;
 import facades.interfaces.ScoreBoard;
 import facades.interfaces.RiddleFacade;
 import facades.interfaces.FacadeFactory;
