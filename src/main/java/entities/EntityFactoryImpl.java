@@ -211,7 +211,7 @@ public class EntityFactoryImpl implements EntityFactory {
         EntityManager em = getEntityManager();
 
         UserImpl user;
-        AttemptImpl attempt;
+        Attempt attempt;
         Riddle riddle;
 
         try {
@@ -248,7 +248,7 @@ public class EntityFactoryImpl implements EntityFactory {
     public DigestRiddle getDigestRiddle(UUID riddle_id) throws NotFoundException {
         for (Riddle riddle : riddles) {
             if (riddle.Id().equals(riddle_id)) {
-                return (DigestRiddleImpl) riddle;
+                return (DigestRiddle) riddle;
             }
         }
 
