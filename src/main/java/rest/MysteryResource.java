@@ -50,8 +50,7 @@ public class MysteryResource {
         try {
 
             Attempt attempt = FACADE.newAttempt(id);
-            AttemptDTO a = attempt.toDTO();
-            return gson.toJson(a);
+            return gson.toJson(attempt.toDTO());
 
         } catch (NotFoundException e) {
 

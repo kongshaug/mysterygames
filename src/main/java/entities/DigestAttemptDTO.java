@@ -11,7 +11,7 @@ package entities;
  */
 class DigestAttemptDTO extends AttemptDTO {
     
-     private Integer tries;
+     private int tries;
      
      DigestAttemptDTO(DigestAttemptImpl attempt) {
        this.riddle = attempt.getRiddle().toDTO();
