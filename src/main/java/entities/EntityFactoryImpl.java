@@ -8,9 +8,11 @@ package entities;
 import entities.interfaces.Attempt;
 import entities.interfaces.DigestRiddle;
 import entities.interfaces.EntityFactory;
+import entities.interfaces.Riddle;
 import entities.interfaces.User;
 import errorhandling.NotFoundException;
 import java.util.ArrayList;
+import java.util.Iterator;
 import java.util.List;
 import java.util.Random;
 import java.util.UUID;
@@ -27,7 +29,7 @@ public class EntityFactoryImpl implements EntityFactory {
 
     private static EntityFactoryImpl instance = null;
     private static EntityManagerFactory emf;
-    private static List<RiddleImpl> riddles;
+    private static List<Riddle> riddles;
 
     public static EntityFactoryImpl getFactory() {
         if (instance == null) {
@@ -154,16 +156,16 @@ public class EntityFactoryImpl implements EntityFactory {
         return users;
     }
 
-    private RiddleImpl getRiddle(UserImpl user) {
+    private Riddle getRiddle(UserImpl user) {
 
-        List<RiddleImpl> levelRiddles = new ArrayList();
+        List<Riddle> levelRiddles = new ArrayList();
 
         riddles.stream().filter((riddle) -> (riddle.level() == user.level())).forEach((riddle) -> {
             levelRiddles.add(riddle);
         });
 
         Random random = new Random();
-        RiddleImpl newRiddle = null;
+        Riddle newRiddle = null;
         int list_length = levelRiddles.size();
 
         for (int i = 0; i < list_length; i++) {
@@ -180,11 +182,11 @@ public class EntityFactoryImpl implements EntityFactory {
         return newRiddle;
     }
 
-    private List<RiddleImpl> getAllRiddles() {
+    private List<Riddle> getAllRiddles() {
 
         EntityManager em = getEntityManager();
 
-        List<RiddleImpl> allRiddles = new ArrayList();
+        List<Riddle> allRiddles = new ArrayList();
 
         TypedQuery<TimeRiddleImpl> timeQuery = em.createQuery("SELECT t FROM TimeRiddleImpl t", TimeRiddleImpl.class);
         List<TimeRiddleImpl> timeRiddles = timeQuery.getResultList();
@@ -210,7 +212,7 @@ public class EntityFactoryImpl implements EntityFactory {
 
         UserImpl user;
         AttemptImpl attempt;
-        RiddleImpl riddle;
+        Riddle riddle;
 
         try {
             user = em.find(UserImpl.class, id);
@@ -244,8 +246,7 @@ public class EntityFactoryImpl implements EntityFactory {
 
     @Override
     public DigestRiddle getDigestRiddle(UUID riddle_id) throws NotFoundException {
-        for (RiddleImpl riddle : riddles) {
-
+        for (Riddle riddle : riddles) {
             if (riddle.Id().equals(riddle_id)) {
                 return (DigestRiddleImpl) riddle;
             }
