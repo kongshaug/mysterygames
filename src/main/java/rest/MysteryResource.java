@@ -3,7 +3,6 @@ package rest;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import com.google.gson.JsonParser;
-import entities.AttemptDTO;
 import entities.UserDTO;
 import entities.interfaces.Attempt;
 import entities.interfaces.User;
